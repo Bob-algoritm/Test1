@@ -1,0 +1,22 @@
+{
+  "properties": {
+    "role": {
+      "type": "string",
+      "description": "The role of the user in the app",
+      "enum": [
+        "admin",
+        "user"
+      ]
+    },
+    "can_edit_units": {
+      "type": "boolean",
+      "default": false,
+      "description": "Grants the user permission to change unit availability status (Available / Reserved / Occupied)"
+    }
+  },
+  "required": [
+    "role"
+  ],
+  "name": "User",
+  "type": "object"
+}

@@ -1,0 +1,72 @@
+{
+  "properties": {
+    "unit_number": {
+      "type": "string",
+      "description": "Display number / label of the unit (e.g. 12B)"
+    },
+    "project_id": {
+      "type": "string",
+      "description": "Owning project id"
+    },
+    "building_id": {
+      "type": "string",
+      "description": "Owning building id"
+    },
+    "floor_id": {
+      "type": "string",
+      "description": "Owning floor id"
+    },
+    "floor_number": {
+      "type": "number",
+      "description": "Denormalized floor number for table sorting"
+    },
+    "size_sqm": {
+      "type": "number",
+      "description": "Unit size in square meters"
+    },
+    "price": {
+      "type": "number",
+      "description": "Listed price in the app currency"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "available",
+        "reserved",
+        "occupied"
+      ],
+      "default": "available",
+      "description": "Availability status of the unit"
+    },
+    "bedrooms": {
+      "type": "number",
+      "default": 0,
+      "description": "Number of bedrooms"
+    },
+    "bathrooms": {
+      "type": "number",
+      "default": 0,
+      "description": "Number of bathrooms"
+    },
+    "photo_url": {
+      "type": "string",
+      "description": "Photo of the unit / apartment"
+    },
+    "floor_plan_url": {
+      "type": "string",
+      "description": "Floor plan image URL"
+    },
+    "description": {
+      "type": "string",
+      "description": "Detailed description of the unit"
+    }
+  },
+  "required": [
+    "unit_number",
+    "project_id",
+    "building_id",
+    "floor_id"
+  ],
+  "name": "Unit",
+  "type": "object"
+}

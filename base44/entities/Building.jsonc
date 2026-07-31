@@ -1,0 +1,26 @@
+{
+  "properties": {
+    "name": {
+      "type": "string",
+      "description": "Building name or tower label"
+    },
+    "project_id": {
+      "type": "string",
+      "description": "Owning project id"
+    },
+    "address": {
+      "type": "string",
+      "description": "Street address of the building"
+    },
+    "floors_count": {
+      "type": "number",
+      "description": "Total number of floors in the building"
+    }
+  },
+  "required": [
+    "name",
+    "project_id"
+  ],
+  "name": "Building",
+  "type": "object"
+}

@@ -1,0 +1,26 @@
+{
+  "properties": {
+    "name": {
+      "type": "string",
+      "description": "Name of the project / residential complex"
+    },
+    "description": {
+      "type": "string",
+      "description": "Short marketing description"
+    },
+    "location": {
+      "type": "string",
+      "description": "Address or area of the project"
+    },
+    "image_url": {
+      "type": "string",
+      "description": "Cover image URL for the project",
+      "format": "uri"
+    }
+  },
+  "required": [
+    "name"
+  ],
+  "name": "Project",
+  "type": "object"
+}

@@ -1,0 +1,27 @@
+{
+  "properties": {
+    "building_id": {
+      "type": "string",
+      "description": "Owning building id"
+    },
+    "project_id": {
+      "type": "string",
+      "description": "Owning project id (denormalized for easy filtering)"
+    },
+    "floor_number": {
+      "type": "number",
+      "description": "Numeric floor level (e.g. 1, 2, -1 for basement)"
+    },
+    "name": {
+      "type": "string",
+      "description": "Optional display name for the floor"
+    }
+  },
+  "required": [
+    "building_id",
+    "project_id",
+    "floor_number"
+  ],
+  "name": "Floor",
+  "type": "object"
+}
