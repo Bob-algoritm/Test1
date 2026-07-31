@@ -1,6 +1,6 @@
 import React from "react";
 import { cn } from "@/lib/utils";
-import { getStatus } from "@/lib/unitStatus";
+import { getStatus, formatPrice } from "@/lib/unitStatus";
 
 function UnitCard({ unit, onClick }) {
   const s = getStatus(unit.status);
@@ -9,20 +9,31 @@ function UnitCard({ unit, onClick }) {
       type="button"
       onClick={onClick}
       className={cn(
-        "group relative rounded-xl border p-3 text-left transition-all duration-200 hover:-translate-y-0.5 hover:shadow-xl hover:shadow-black/20",
+        "group relative overflow-hidden rounded-xl border text-left transition-all duration-200 hover:-translate-y-0.5 hover:shadow-xl hover:shadow-black/30",
         s.bg,
         s.border
       )}
     >
-      <div className="flex items-center justify-between">
-        <span className="font-semibold text-sm">Unit {unit.unit_number}</span>
-        <span className={cn("w-2.5 h-2.5 rounded-full ring-2 ring-offset-2 ring-offset-background", s.dot, s.ring)} />
-      </div>
-      <div className="mt-2 text-xs text-muted-foreground">
-        {unit.size_sqm ? `${unit.size_sqm} m²` : "—"}
-      </div>
-      <div className={cn("mt-2 inline-block text-[10px] font-semibold uppercase tracking-wider", s.text)}>
-        {s.label}
+      {/* Status color strip */}
+      <div className={cn("h-1.5 w-full", s.solid)} />
+
+      <div className="p-3.5">
+        <div className="flex items-start justify-between gap-2">
+          <div>
+            <div className="font-semibold leading-tight">Unit {unit.unit_number}</div>
+            <div className="text-xs text-muted-foreground mt-0.5">
+              {unit.size_sqm ? `${unit.size_sqm} m²` : "Size —"}
+            </div>
+          </div>
+          <div className={cn("shrink-0 rounded-md px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide", s.solid, "text-black")}>
+            {s.label}
+          </div>
+        </div>
+
+        <div className="mt-2.5 pt-2.5 border-t border-border/60 flex items-center justify-between">
+          <span className="text-xs font-medium">{formatPrice(unit.price)}</span>
+          <span className={cn("text-[10px] uppercase tracking-wide", s.text)}>Fl {unit.floor_number ?? "—"}</span>
+        </div>
       </div>
     </button>
   );
@@ -45,6 +56,10 @@ export default function MatrixGrid({ floors, units, onSelect }) {
         const floorUnits = units
           .filter((u) => u.floor_id === floor.id)
           .sort((a, b) => String(a.unit_number).localeCompare(String(b.unit_number), undefined, { numeric: true }));
+
+        const counts = { available: 0, reserved: 0, occupied: 0 };
+        floorUnits.forEach((u) => { if (counts[u.status] != null) counts[u.status] += 1; });
+
         return (
           <div key={floor.id}>
             <div className="flex items-center gap-3 mb-3">
@@ -52,9 +67,16 @@ export default function MatrixGrid({ floors, units, onSelect }) {
                 <span className="text-[9px] uppercase text-muted-foreground leading-none">Fl</span>
                 <span className="font-semibold text-sm leading-none mt-0.5">{floor.floor_number}</span>
               </div>
-              <div className="text-sm font-medium">{floor.name || `Floor ${floor.floor_number}`}</div>
+              <div>
+                <div className="text-sm font-medium">{floor.name || `Floor ${floor.floor_number}`}</div>
+                <div className="text-xs text-muted-foreground mt-0.5 flex items-center gap-2">
+                  <span className="inline-flex items-center gap-1"><span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />{counts.available}</span>
+                  <span className="inline-flex items-center gap-1"><span className="w-1.5 h-1.5 rounded-full bg-amber-500" />{counts.reserved}</span>
+                  <span className="inline-flex items-center gap-1"><span className="w-1.5 h-1.5 rounded-full bg-rose-500" />{counts.occupied}</span>
+                  <span className="ml-1">· {floorUnits.length} units</span>
+                </div>
+              </div>
               <div className="flex-1 h-px bg-border" />
-              <span className="text-xs text-muted-foreground">{floorUnits.length} units</span>
             </div>
             {floorUnits.length === 0 ? (
               <div className="ml-[60px] text-xs text-muted-foreground italic">No units on this floor</div>
