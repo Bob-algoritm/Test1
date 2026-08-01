@@ -2,19 +2,13 @@ import React from "react";
 import { useProjects } from "@/hooks/useUnitData";
 import { Image } from "@/components/ui/image";
 import { Button } from "@/components/ui/button";
+import LanguageSwitcher from "@/components/LanguageSwitcher";
+import { useLang } from "@/lib/i18n.jsx";
 import {
   Building2, LayoutGrid, Home as HomeIcon, Mail, Phone, MapPin,
   ArrowRight, CheckCircle2, Hammer, ShieldCheck, TrendingUp,
 } from "lucide-react";
 import Matrix from "@/pages/Matrix";
-
-const GUIDE = [
-  { id: "buy", label: "Buy a House", icon: HomeIcon },
-  { id: "projects", label: "Our Projects", icon: Building2 },
-  { id: "availability", label: "Availability Matrix", icon: LayoutGrid },
-  { id: "about", label: "About Us", icon: CheckCircle2 },
-  { id: "contact", label: "Contact", icon: Mail },
-];
 
 const scrollTo = (id) => {
   document.getElementById(id)?.scrollIntoView({ behavior: "smooth", block: "start" });
@@ -22,6 +16,28 @@ const scrollTo = (id) => {
 
 export default function Home() {
   const { data: projects = [] } = useProjects();
+  const { t } = useLang();
+
+  const GUIDE = [
+    { id: "buy", label: t("nav.buy"), icon: HomeIcon },
+    { id: "projects", label: t("nav.projects"), icon: Building2 },
+    { id: "availability", label: t("nav.availability"), icon: LayoutGrid },
+    { id: "about", label: t("nav.about"), icon: CheckCircle2 },
+    { id: "contact", label: t("nav.contact"), icon: Mail },
+  ];
+
+  const FEATURES = [
+    { icon: Hammer, title: t("feat.constructTitle"), text: t("feat.constructText") },
+    { icon: ShieldCheck, title: t("feat.trustedTitle"), text: t("feat.trustedText") },
+    { icon: TrendingUp, title: t("feat.growingTitle"), text: t("feat.growingText") },
+  ];
+
+  const STEPS = [
+    { n: "01", t: t("buy.step1t"), d: t("buy.step1d") },
+    { n: "02", t: t("buy.step2t"), d: t("buy.step2d") },
+    { n: "03", t: t("buy.step3t"), d: t("buy.step3d") },
+    { n: "04", t: t("buy.step4t"), d: t("buy.step4d") },
+  ];
 
   return (
     <div className="bg-background text-foreground">
@@ -49,12 +65,15 @@ export default function Home() {
               </button>
             ))}
           </nav>
-          <a href="tel:+15550102025" className="hidden lg:flex items-center gap-2 text-sm font-medium text-foreground hover:text-primary transition">
-            <Phone className="w-4 h-4" /> +1 (555) 010-2025
-          </a>
-          <Button size="sm" className="gap-2" onClick={() => scrollTo("availability")}>
-            Browse Homes <ArrowRight className="w-4 h-4" />
-          </Button>
+          <div className="flex items-center gap-3">
+            <LanguageSwitcher />
+            <a href="tel:+15550102025" className="hidden lg:flex items-center gap-2 text-sm font-medium text-foreground hover:text-primary transition">
+              <Phone className="w-4 h-4" /> +1 (555) 010-2025
+            </a>
+            <Button size="sm" className="gap-2" onClick={() => scrollTo("availability")}>
+              {t("header.browseHomes")} <ArrowRight className="w-4 h-4" />
+            </Button>
+          </div>
         </div>
       </header>
 
@@ -69,21 +88,20 @@ export default function Home() {
         <div className="relative max-w-7xl mx-auto px-4 md:px-8 py-24 md:py-36">
           <div className="max-w-2xl text-white">
             <span className="inline-flex items-center gap-2 rounded-full bg-white/15 backdrop-blur px-3 py-1 text-xs font-medium tracking-wide uppercase">
-              <Hammer className="w-3.5 h-3.5" /> We design &amp; build
+              <Hammer className="w-3.5 h-3.5" /> {t("hero.badge")}
             </span>
             <h1 className="mt-5 text-4xl md:text-6xl font-bold tracking-tight leading-[1.05]">
-              Homes built for the way you live.
+              {t("hero.title")}
             </h1>
             <p className="mt-5 text-lg text-white/85 max-w-xl">
-              UnitMatrix Living develops modern apartments and lets you check real-time
-              availability unit by unit — so you always know exactly what&apos;s ready to move into.
+              {t("hero.subtitle")}
             </p>
             <div className="mt-8 flex flex-wrap gap-3">
               <Button size="lg" className="gap-2" onClick={() => scrollTo("availability")}>
-                <LayoutGrid className="w-5 h-5" /> See Availability
+                <LayoutGrid className="w-5 h-5" /> {t("hero.seeAvailability")}
               </Button>
               <Button size="lg" variant="secondary" className="gap-2 bg-white text-emerald-900 hover:bg-white/90" onClick={() => scrollTo("projects")}>
-                <Building2 className="w-5 h-5" /> Our Projects
+                <Building2 className="w-5 h-5" /> {t("hero.ourProjects")}
               </Button>
             </div>
           </div>
@@ -112,18 +130,10 @@ export default function Home() {
       <section id="about" className="max-w-7xl mx-auto px-4 md:px-8 py-20">
         <div className="grid md:grid-cols-2 gap-12 items-center">
           <div>
-            <h2 className="text-3xl font-bold tracking-tight">A company that builds, then opens the door.</h2>
-            <p className="mt-4 text-muted-foreground leading-relaxed">
-              We are a full-service real estate developer. From land acquisition and design to
-              construction and handover, UnitMatrix Living manages every step — so quality is
-              never outsourced and availability is always accurate.
-            </p>
+            <h2 className="text-3xl font-bold tracking-tight">{t("about.title")}</h2>
+            <p className="mt-4 text-muted-foreground leading-relaxed">{t("about.body")}</p>
             <div className="mt-8 space-y-3">
-              {[
-                { icon: Hammer, title: "In-house construction", text: "Our crews build every project to a single standard." },
-                { icon: ShieldCheck, title: "Trusted & transparent", text: "Live availability and pricing, updated in real time." },
-                { icon: TrendingUp, title: "Growing portfolio", text: "New communities breaking ground every year." },
-              ].map((f) => (
+              {FEATURES.map((f) => (
                 <div key={f.title} className="flex gap-3">
                   <span className="w-9 h-9 shrink-0 rounded-lg bg-primary/10 text-primary flex items-center justify-center">
                     <f.icon className="w-4.5 h-4.5" />
@@ -150,18 +160,11 @@ export default function Home() {
       <section id="buy" className="border-y border-border bg-secondary/30">
         <div className="max-w-7xl mx-auto px-4 md:px-8 py-20">
           <div className="text-center max-w-2xl mx-auto mb-12">
-            <h2 className="text-3xl font-bold tracking-tight">How to buy a home with us</h2>
-            <p className="mt-3 text-muted-foreground">
-              Four simple steps from browsing to keys in hand.
-            </p>
+            <h2 className="text-3xl font-bold tracking-tight">{t("buy.title")}</h2>
+            <p className="mt-3 text-muted-foreground">{t("buy.subtitle")}</p>
           </div>
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
-            {[
-              { n: "01", t: "Browse availability", d: "Explore the live matrix to find units that match your budget and size." },
-              { n: "02", t: "Reserve a unit", d: "Lock in your apartment with our team — its status updates instantly." },
-              { n: "03", t: "Sign & finance", d: "We guide you through contracts and financing options." },
-              { n: "04", t: "Move in", d: "Collect your keys and step into your new home." },
-            ].map((s) => (
+            {STEPS.map((s) => (
               <div key={s.n} className="rounded-xl border border-border bg-background p-6">
                 <div className="text-primary font-semibold text-sm">{s.n}</div>
                 <div className="mt-2 font-semibold">{s.t}</div>
@@ -176,13 +179,13 @@ export default function Home() {
       <section id="projects" className="max-w-7xl mx-auto px-4 md:px-8 py-20">
         <div className="flex items-end justify-between gap-4 mb-10">
           <div>
-            <h2 className="text-3xl font-bold tracking-tight">Our projects</h2>
-            <p className="mt-2 text-muted-foreground">Communities we&apos;ve built and are building now.</p>
+            <h2 className="text-3xl font-bold tracking-tight">{t("projects.title")}</h2>
+            <p className="mt-2 text-muted-foreground">{t("projects.subtitle")}</p>
           </div>
         </div>
         {projects.length === 0 ? (
           <div className="rounded-2xl border border-dashed border-border p-12 text-center text-muted-foreground">
-            New projects are on the way — check back soon.
+            {t("projects.empty")}
           </div>
         ) : (
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -205,7 +208,7 @@ export default function Home() {
                     onClick={() => scrollTo("availability")}
                     className="mt-4 inline-flex items-center gap-2 text-sm font-medium text-primary hover:gap-3 transition-all"
                   >
-                    View availability <ArrowRight className="w-4 h-4" />
+                    {t("projects.viewAvailability")} <ArrowRight className="w-4 h-4" />
                   </button>
                 </div>
               </div>
@@ -218,10 +221,8 @@ export default function Home() {
       <section id="availability" className="border-t border-border bg-secondary/20">
         <div className="max-w-7xl mx-auto px-4 md:px-8 py-20">
           <div className="mb-8">
-            <h2 className="text-3xl font-bold tracking-tight">Live availability matrix</h2>
-            <p className="mt-2 text-muted-foreground">
-              Real-time unit availability across every building we develop.
-            </p>
+            <h2 className="text-3xl font-bold tracking-tight">{t("availability.title")}</h2>
+            <p className="mt-2 text-muted-foreground">{t("availability.subtitle")}</p>
           </div>
           <div className="rounded-2xl border border-border bg-background overflow-hidden">
             <Matrix />
@@ -234,16 +235,14 @@ export default function Home() {
         <div className="rounded-2xl border border-border bg-primary text-primary-foreground p-10 md:p-16">
           <div className="grid md:grid-cols-2 gap-10 items-center">
             <div>
-              <h2 className="text-3xl font-bold tracking-tight">Ready to find your home?</h2>
-              <p className="mt-3 text-primary-foreground/85">
-                Talk to our sales team or browse the matrix — we&apos;ll help you secure your unit.
-              </p>
+              <h2 className="text-3xl font-bold tracking-tight">{t("contact.title")}</h2>
+              <p className="mt-3 text-primary-foreground/85">{t("contact.body")}</p>
               <Button variant="secondary" className="mt-6 gap-2 bg-white text-emerald-900 hover:bg-white/90" onClick={() => scrollTo("availability")}>
-                <LayoutGrid className="w-5 h-5" /> Open the matrix
+                <LayoutGrid className="w-5 h-5" /> {t("contact.openMatrix")}
               </Button>
             </div>
             <div className="space-y-3 md:justify-self-end">
-              <div className="font-medium text-lg">Sarah Lin — Sales Director</div>
+              <div className="font-medium text-lg">{t("contact.person")} — {t("contact.role")}</div>
               <a href="tel:+15550102025" className="flex items-center gap-3 hover:underline"><Phone className="w-5 h-5" /> +1 (555) 010-2025</a>
               <a href="mailto:hello@unitmatrix.living" className="flex items-center gap-3 hover:underline"><Mail className="w-5 h-5" /> hello@unitmatrix.living</a>
               <div className="flex items-center gap-3"><MapPin className="w-5 h-5" /> 1 Skyline Plaza, Downtown</div>
@@ -261,7 +260,7 @@ export default function Home() {
             </div>
             <span className="font-medium text-foreground">UnitMatrix Living</span>
           </div>
-          <div>© {new Date().getFullYear()} UnitMatrix Living. All rights reserved.</div>
+          <div>{t("footer.rights", { year: new Date().getFullYear() })}</div>
         </div>
       </footer>
     </div>
