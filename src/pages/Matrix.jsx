@@ -22,8 +22,10 @@ import MatrixGrid from "@/components/MatrixGrid";
 import UnitTable from "@/components/UnitTable";
 import UnitDetailDialog from "@/components/UnitDetailDialog";
 import LanguageSwitcher from "@/components/LanguageSwitcher";
+import { useLang } from "@/lib/i18n.jsx";
 
 export default function Matrix() {
+  const { t } = useLang();
   const { user } = useAuth();
   const canEdit = user?.role === "admin" || user?.can_edit_units === true;
 
@@ -71,8 +73,8 @@ export default function Matrix() {
     return (
       <div className="p-8 md:p-12 max-w-6xl mx-auto">
         <EmptyState
-          title="No projects yet"
-          message="An admin needs to create projects, buildings, and units before the availability matrix can be viewed."
+          title={t("matrix.noProjectsTitle")}
+          message={t("matrix.noProjectsMsg")}
         />
       </div>
     );
@@ -94,7 +96,7 @@ export default function Matrix() {
           <div className="flex items-center gap-3">
             <LanguageSwitcher />
             <Button asChild size="sm" variant="outline" className="gap-2">
-              <Link to="/"><ArrowLeft className="w-4 h-4" /> Home</Link>
+              <Link to="/"><ArrowLeft className="w-4 h-4" /> {t("matrix.home")}</Link>
             </Button>
           </div>
         </div>
@@ -104,9 +106,9 @@ export default function Matrix() {
       <div className="flex flex-col gap-4 mb-6">
         <div className="flex flex-col md:flex-row md:items-end gap-4 md:justify-between">
           <div>
-            <h1 className="text-2xl md:text-3xl font-bold tracking-tight">Availability Matrix</h1>
+            <h1 className="text-2xl md:text-3xl font-bold tracking-tight">{t("nav.availability")}</h1>
             <p className="text-muted-foreground mt-1 text-sm">
-              Browse unit availability across projects and buildings.
+              {t("matrix.subtitle")}
             </p>
           </div>
           <div className="flex rounded-lg border border-border p-1">
@@ -117,7 +119,7 @@ export default function Matrix() {
                 view === "grid" ? "bg-primary text-primary-foreground" : "text-muted-foreground hover:text-foreground"
               )}
             >
-              <LayoutGrid className="w-4 h-4" /> Grid
+              <LayoutGrid className="w-4 h-4" /> {t("matrix.grid")}
             </button>
             <button
               onClick={() => setView("table")}
@@ -126,7 +128,7 @@ export default function Matrix() {
                 view === "table" ? "bg-primary text-primary-foreground" : "text-muted-foreground hover:text-foreground"
               )}
             >
-              <Table2 className="w-4 h-4" /> Table
+              <Table2 className="w-4 h-4" /> {t("matrix.table")}
             </button>
           </div>
         </div>
@@ -135,7 +137,7 @@ export default function Matrix() {
         <div className="flex flex-wrap gap-3 items-center">
           <Select value={effectiveProject} onValueChange={(v) => { setProjectId(v); setBuildingId(""); }}>
             <SelectTrigger className="w-[200px]">
-              <SelectValue placeholder="Select project" />
+              <SelectValue placeholder={t("matrix.selectProject")} />
             </SelectTrigger>
             <SelectContent>
               {projects.map((p) => (
@@ -150,7 +152,7 @@ export default function Matrix() {
             disabled={!projectBuildings.length}
           >
             <SelectTrigger className="w-[200px]">
-              <SelectValue placeholder="Select building" />
+              <SelectValue placeholder={t("matrix.selectBuilding")} />
             </SelectTrigger>
             <SelectContent>
               {projectBuildings.map((b) => (
@@ -166,7 +168,7 @@ export default function Matrix() {
                 <div key={st} className="flex items-center gap-1.5 text-sm">
                   <span className={cn("w-2.5 h-2.5 rounded-full", cfg.dot)} />
                   <span className="font-semibold">{stats[st]}</span>
-                  <span className="text-muted-foreground">{cfg.label}</span>
+                  <span className="text-muted-foreground">{t(`status.${st}`)}</span>
                 </div>
               );
             })}
@@ -177,8 +179,8 @@ export default function Matrix() {
       {/* Content */}
       {!effectiveBuilding ? (
         <EmptyState
-          title="No buildings in this project"
-          message="Select a different project, or ask an admin to add buildings."
+          title={t("matrix.noBuildingsTitle")}
+          message={t("matrix.noBuildingsMsg")}
         />
       ) : view === "grid" ? (
         <MatrixGrid floors={buildingFloors} units={buildingUnits} onSelect={setSelected} />
