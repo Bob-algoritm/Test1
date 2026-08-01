@@ -101,46 +101,15 @@ export default function Matrix() {
       </header>
       <div className="p-6 md:p-10 max-w-7xl mx-auto">
       {/* Header */}
-      <div className="flex flex-col gap-6 mb-8">
-        <div>
-          <h1 className="text-2xl md:text-3xl font-bold tracking-tight">Availability Matrix</h1>
-          <p className="text-muted-foreground mt-1 text-sm">
-            Browse unit availability across projects and buildings.
-          </p>
-        </div>
-
-        {/* Controls */}
-        <div className="flex flex-col lg:flex-row gap-4 lg:items-center">
-          <div className="flex flex-wrap gap-3">
-            <Select value={effectiveProject} onValueChange={(v) => { setProjectId(v); setBuildingId(""); }}>
-              <SelectTrigger className="w-[200px]">
-                <SelectValue placeholder="Select project" />
-              </SelectTrigger>
-              <SelectContent>
-                {projects.map((p) => (
-                  <SelectItem key={p.id} value={p.id}>{p.name}</SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-
-            <Select
-              value={effectiveBuilding}
-              onValueChange={setBuildingId}
-              disabled={!projectBuildings.length}
-            >
-              <SelectTrigger className="w-[200px]">
-                <SelectValue placeholder="Select building" />
-              </SelectTrigger>
-              <SelectContent>
-                {projectBuildings.map((b) => (
-                  <SelectItem key={b.id} value={b.id}>{b.name}</SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
+      <div className="flex flex-col gap-4 mb-6">
+        <div className="flex flex-col md:flex-row md:items-end gap-4 md:justify-between">
+          <div>
+            <h1 className="text-2xl md:text-3xl font-bold tracking-tight">Availability Matrix</h1>
+            <p className="text-muted-foreground mt-1 text-sm">
+              Browse unit availability across projects and buildings.
+            </p>
           </div>
-
-          {/* View toggle */}
-          <div className="flex rounded-lg border border-border p-1 ml-auto">
+          <div className="flex rounded-lg border border-border p-1">
             <button
               onClick={() => setView("grid")}
               className={cn(
@@ -162,23 +131,45 @@ export default function Matrix() {
           </div>
         </div>
 
-        {/* Stats + legend */}
-        <div className="flex flex-wrap items-center gap-4">
-          <div className="flex flex-wrap gap-2">
+        {/* Controls + legend */}
+        <div className="flex flex-wrap gap-3 items-center">
+          <Select value={effectiveProject} onValueChange={(v) => { setProjectId(v); setBuildingId(""); }}>
+            <SelectTrigger className="w-[200px]">
+              <SelectValue placeholder="Select project" />
+            </SelectTrigger>
+            <SelectContent>
+              {projects.map((p) => (
+                <SelectItem key={p.id} value={p.id}>{p.name}</SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+
+          <Select
+            value={effectiveBuilding}
+            onValueChange={setBuildingId}
+            disabled={!projectBuildings.length}
+          >
+            <SelectTrigger className="w-[200px]">
+              <SelectValue placeholder="Select building" />
+            </SelectTrigger>
+            <SelectContent>
+              {projectBuildings.map((b) => (
+                <SelectItem key={b.id} value={b.id}>{b.name}</SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+
+          <div className="flex flex-wrap gap-2 ml-auto">
             {STATUSES.map((st) => {
               const cfg = getStatus(st);
               return (
-                <div key={st} className={cn("flex items-center gap-2 rounded-lg border px-3 py-2", cfg.bg, cfg.border)}>
+                <div key={st} className="flex items-center gap-1.5 text-sm">
                   <span className={cn("w-2.5 h-2.5 rounded-full", cfg.dot)} />
-                  <span className={cn("text-sm font-semibold", cfg.text)}>{stats[st]}</span>
-                  <span className="text-xs text-muted-foreground">{cfg.label}</span>
+                  <span className="font-semibold">{stats[st]}</span>
+                  <span className="text-muted-foreground">{cfg.label}</span>
                 </div>
               );
             })}
-            <div className="flex items-center gap-2 rounded-lg border border-border px-3 py-2">
-              <span className="text-sm font-semibold">{buildingUnits.length}</span>
-              <span className="text-xs text-muted-foreground">Total</span>
-            </div>
           </div>
         </div>
       </div>
