@@ -1,4 +1,5 @@
 import React, { useMemo, useState } from "react";
+import { Link } from "react-router-dom";
 import { useAuth } from "@/lib/AuthContext";
 import {
   useProjects,
@@ -14,12 +15,13 @@ import {
   SelectContent,
   SelectItem,
 } from "@/components/ui/select";
-import { LayoutGrid, Table2, Loader2, Building2 } from "lucide-react";
+import { LayoutGrid, Table2, Loader2, Building2, ArrowLeft } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { getStatus, STATUSES } from "@/lib/unitStatus";
 import MatrixGrid from "@/components/MatrixGrid";
 import UnitTable from "@/components/UnitTable";
 import UnitDetailDialog from "@/components/UnitDetailDialog";
+import LanguageSwitcher from "@/components/LanguageSwitcher";
 
 export default function Matrix() {
   const { user } = useAuth();
@@ -77,7 +79,27 @@ export default function Matrix() {
   }
 
   return (
-    <div className="p-6 md:p-10 max-w-7xl mx-auto">
+    <div className="min-h-screen bg-background">
+      <header className="sticky top-0 z-40 border-b border-border bg-background/85 backdrop-blur-xl">
+        <div className="max-w-7xl mx-auto px-4 md:px-8 h-16 flex items-center justify-between gap-4">
+          <Link to="/" className="flex items-center gap-2.5">
+            <div className="w-9 h-9 rounded-xl bg-primary flex items-center justify-center">
+              <Building2 className="w-5 h-5 text-primary-foreground" />
+            </div>
+            <div className="leading-none">
+              <div className="font-semibold tracking-tight">UnitMatrix</div>
+              <div className="text-[10px] uppercase tracking-widest text-muted-foreground mt-1">Living</div>
+            </div>
+          </Link>
+          <div className="flex items-center gap-3">
+            <LanguageSwitcher />
+            <Button asChild size="sm" variant="outline" className="gap-2">
+              <Link to="/"><ArrowLeft className="w-4 h-4" /> Home</Link>
+            </Button>
+          </div>
+        </div>
+      </header>
+      <div className="p-6 md:p-10 max-w-7xl mx-auto">
       {/* Header */}
       <div className="flex flex-col gap-6 mb-8">
         <div>
@@ -184,6 +206,7 @@ export default function Matrix() {
         onOpenChange={(v) => !v && setSelected(null)}
         canEdit={canEdit}
       />
+      </div>
     </div>
   );
 }

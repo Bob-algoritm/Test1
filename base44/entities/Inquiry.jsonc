@@ -1,0 +1,22 @@
+{
+  "name": "Inquiry",
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string",
+      "description": "Inquirer's full name"
+    },
+    "phone": {
+      "type": "string",
+      "description": "Contact phone number"
+    },
+    "message": {
+      "type": "string",
+      "description": "Optional inquiry message"
+    }
+  },
+  "required": [
+    "name",
+    "phone"
+  ]
+}
