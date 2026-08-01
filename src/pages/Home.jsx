@@ -49,6 +49,9 @@ export default function Home() {
               </button>
             ))}
           </nav>
+          <a href="tel:+15550102025" className="hidden lg:flex items-center gap-2 text-sm font-medium text-foreground hover:text-primary transition">
+            <Phone className="w-4 h-4" /> +1 (555) 010-2025
+          </a>
           <Button size="sm" className="gap-2" onClick={() => scrollTo("availability")}>
             Browse Homes <ArrowRight className="w-4 h-4" />
           </Button>
@@ -240,8 +243,9 @@ export default function Home() {
               </Button>
             </div>
             <div className="space-y-3 md:justify-self-end">
-              <div className="flex items-center gap-3"><Phone className="w-5 h-5" /> +1 (555) 010-2025</div>
-              <div className="flex items-center gap-3"><Mail className="w-5 h-5" /> hello@unitmatrix.living</div>
+              <div className="font-medium text-lg">Sarah Lin — Sales Director</div>
+              <a href="tel:+15550102025" className="flex items-center gap-3 hover:underline"><Phone className="w-5 h-5" /> +1 (555) 010-2025</a>
+              <a href="mailto:hello@unitmatrix.living" className="flex items-center gap-3 hover:underline"><Mail className="w-5 h-5" /> hello@unitmatrix.living</a>
               <div className="flex items-center gap-3"><MapPin className="w-5 h-5" /> 1 Skyline Plaza, Downtown</div>
             </div>
           </div>
