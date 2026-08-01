@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Outlet, NavLink, useNavigate } from "react-router-dom";
 import { useAuth } from "@/lib/AuthContext";
-import { LayoutGrid, Shield, LogOut, Building2, Menu, X } from "lucide-react";
+import { Home as HomeIcon, LayoutGrid, Shield, LogOut, Building2, Menu, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
@@ -14,7 +14,8 @@ export default function AppLayout() {
   const handleLogout = () => logout();
 
   const navItems = [
-    { to: "/", label: "Availability Matrix", icon: LayoutGrid, end: true },
+    { to: "/", label: "Home", icon: HomeIcon, end: true },
+    { to: "/matrix", label: "Availability Matrix", icon: LayoutGrid, end: false },
     ...(isAdmin ? [{ to: "/admin", label: "Admin Panel", icon: Shield, end: false }] : []),
   ];
 
