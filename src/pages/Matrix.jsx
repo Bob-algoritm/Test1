@@ -100,8 +100,7 @@ export default function Matrix() {
               <Building2 className="w-5 h-5 text-primary-foreground" />
             </div>
             <div className="leading-none">
-              <div className="font-semibold tracking-tight">UnitMatrix</div>
-              <div className="text-[10px] uppercase tracking-widest text-muted-foreground mt-1">Living</div>
+              <div className="font-semibold tracking-tight">Yangi Hayot</div>
             </div>
           </Link>
           <div className="flex items-center gap-3">

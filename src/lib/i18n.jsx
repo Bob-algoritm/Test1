@@ -86,7 +86,7 @@ const translations = {
     "contact.success": "Thanks! We'll be in touch shortly.",
     "contact.sendAnother": "Send another request",
     "contact.error": "Something went wrong. Please try again.",
-    "footer.rights": "© {year} UnitMatrix Living. All rights reserved.",
+    "footer.rights": "© {year} Yangi Hayot. All rights reserved.",
   },
   ru: {
     "nav.buy": "Купить дом",
@@ -173,7 +173,7 @@ const translations = {
     "contact.success": "Спасибо! Мы скоро свяжемся с вами.",
     "contact.sendAnother": "Отправить ещё одну заявку",
     "contact.error": "Что-то пошло не так. Попробуйте снова.",
-    "footer.rights": "© {year} UnitMatrix Living. Все права защищены.",
+    "footer.rights": "© {year} Yangi Hayot. Все права защищены.",
   },
   uz: {
     "nav.buy": "Uy sotib olish",
@@ -260,7 +260,7 @@ const translations = {
     "contact.success": "Rahmat! Tez orada bog‘lanamiz.",
     "contact.sendAnother": "Yana so‘rov yuborish",
     "contact.error": "Xatolik yuz berdi. Qayta urinib ko‘ring.",
-    "footer.rights": "© {year} UnitMatrix Living. Barcha huquqlar himoyalangan.",
+    "footer.rights": "© {year} Yangi Hayot. Barcha huquqlar himoyalangan.",
   },
 };
 

@@ -53,8 +53,7 @@ export default function Home() {
               <Building2 className="w-5 h-5 text-primary-foreground" />
             </div>
             <div className="leading-none">
-              <div className="font-semibold tracking-tight">UnitMatrix</div>
-              <div className="text-[10px] uppercase tracking-widest text-muted-foreground mt-1">Living</div>
+              <div className="font-semibold tracking-tight">Yangi Hayot</div>
             </div>
           </div>
           <nav className="hidden md:flex items-center gap-1">
@@ -251,7 +250,7 @@ export default function Home() {
             <div className="w-8 h-8 rounded-lg bg-primary flex items-center justify-center">
               <Building2 className="w-4 h-4 text-primary-foreground" />
             </div>
-            <span className="font-medium text-foreground">UnitMatrix Living</span>
+            <span className="font-medium text-foreground">Yangi Hayot</span>
           </div>
           <div>{t("footer.rights", { year: new Date().getFullYear() })}</div>
         </div>
