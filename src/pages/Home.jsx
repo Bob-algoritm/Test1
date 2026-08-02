@@ -73,9 +73,6 @@ export default function Home() {
             <a href="tel:1359" className="hidden lg:flex items-center gap-2 text-sm font-medium text-foreground hover:text-primary transition">
               <Phone className="w-4 h-4" /> 1359
             </a>
-            <Button size="sm" className="gap-2" onClick={() => navigate("/matrix")}>
-              {t("header.browseHomes")} <ArrowRight className="w-4 h-4" />
-            </Button>
           </div>
         </div>
       </header>
