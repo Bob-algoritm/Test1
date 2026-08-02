@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { useQueryClient } from "@tanstack/react-query";
 import { base44 } from "@/api/base44Client";
 import {
@@ -6,21 +6,13 @@ import {
   DialogContent,
   DialogHeader,
   DialogTitle,
-  DialogFooter,
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
-import { Label } from "@/components/ui/label";
-import {
-  Select,
-  SelectTrigger,
-  SelectValue,
-  SelectContent,
-  SelectItem,
-} from "@/components/ui/select";
 import { Image } from "@/components/ui/image";
 import { getStatus, formatPrice, STATUSES } from "@/lib/unitStatus";
 import { cn } from "@/lib/utils";
 import { Bed, Bath, Maximize, Pencil, Loader2, ImageOff } from "lucide-react";
+import { useLang } from "@/lib/i18n.jsx";
 
 function MediaBlock({ url, alt, label }) {
   return (
@@ -50,22 +42,19 @@ function DetailRow({ label, value }) {
 }
 
 export default function UnitDetailDialog({ unit, open, onOpenChange, canEdit }) {
+  const { t } = useLang();
   const qc = useQueryClient();
-  const [status, setStatus] = useState(unit?.status || "available");
   const [saving, setSaving] = useState(false);
-
-  useEffect(() => {
-    setStatus(unit?.status || "available");
-  }, [unit]);
 
   if (!unit) return null;
 
   const s = getStatus(unit.status);
 
-  const saveStatus = async () => {
+  const saveStatus = async (newStatus) => {
+    if (newStatus === unit.status) return;
     setSaving(true);
     try {
-      await base44.entities.Unit.update(unit.id, { status });
+      await base44.entities.Unit.update(unit.id, { status: newStatus });
       qc.invalidateQueries({ queryKey: ["units"] });
       onOpenChange(false);
     } finally {
@@ -78,10 +67,10 @@ export default function UnitDetailDialog({ unit, open, onOpenChange, canEdit }) 
       <DialogContent className="max-w-3xl bg-card border-border p-0 overflow-hidden">
         <DialogHeader className="px-6 pt-6">
           <DialogTitle className="flex items-center gap-3">
-            <span>Unit {unit.unit_number}</span>
+            <span>{t("matrix.unit")} {unit.unit_number}</span>
             <span className={cn("inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-xs font-medium", s.bg, s.text)}>
               <span className={cn("w-1.5 h-1.5 rounded-full", s.dot)} />
-              {s.label}
+              {t(`status.${unit.status}`)}
             </span>
           </DialogTitle>
         </DialogHeader>
@@ -102,30 +91,30 @@ export default function UnitDetailDialog({ unit, open, onOpenChange, canEdit }) 
               <div className="rounded-xl border border-border p-3 text-center">
                 <Bed className="w-4 h-4 mx-auto text-muted-foreground mb-1" />
                 <div className="text-sm font-semibold">{unit.bedrooms ?? "—"}</div>
-                <div className="text-[10px] text-muted-foreground uppercase">Beds</div>
+                <div className="text-[10px] text-muted-foreground uppercase">{t("matrix.beds")}</div>
               </div>
               <div className="rounded-xl border border-border p-3 text-center">
                 <Bath className="w-4 h-4 mx-auto text-muted-foreground mb-1" />
                 <div className="text-sm font-semibold">{unit.bathrooms ?? "—"}</div>
-                <div className="text-[10px] text-muted-foreground uppercase">Baths</div>
+                <div className="text-[10px] text-muted-foreground uppercase">{t("matrix.baths")}</div>
               </div>
             </div>
 
             <div>
               <div className="text-3xl font-bold tracking-tight">{formatPrice(unit.price)}</div>
-              <div className="text-xs text-muted-foreground mt-1">Listed price</div>
+              <div className="text-xs text-muted-foreground mt-1">{t("matrix.price")}</div>
             </div>
 
             <div>
-              <DetailRow label="Floor" value={unit.floor_number ?? "—"} />
-              <DetailRow label="Size" value={unit.size_sqm ? `${unit.size_sqm} m²` : "—"} />
-              <DetailRow label="Bedrooms" value={unit.bedrooms ?? "—"} />
-              <DetailRow label="Bathrooms" value={unit.bathrooms ?? "—"} />
+              <DetailRow label={t("matrix.floor")} value={unit.floor_number ?? "—"} />
+              <DetailRow label={t("matrix.size")} value={unit.size_sqm ? `${unit.size_sqm} m²` : "—"} />
+              <DetailRow label={t("matrix.beds")} value={unit.bedrooms ?? "—"} />
+              <DetailRow label={t("matrix.baths")} value={unit.bathrooms ?? "—"} />
             </div>
 
             {unit.description && (
               <div>
-                <div className="text-xs uppercase tracking-wide text-muted-foreground mb-1">Description</div>
+                <div className="text-xs uppercase tracking-wide text-muted-foreground mb-1">{t("matrix.status")}</div>
                 <p className="text-sm text-muted-foreground leading-relaxed">{unit.description}</p>
               </div>
             )}
@@ -134,45 +123,30 @@ export default function UnitDetailDialog({ unit, open, onOpenChange, canEdit }) 
               <div className="rounded-xl border border-border p-4 bg-sidebar/40">
                 <div className="flex items-center gap-2 mb-3">
                   <Pencil className="w-4 h-4 text-muted-foreground" />
-                  <span className="text-sm font-medium">Change status</span>
+                  <span className="text-sm font-medium">{t("matrix.changeStatus")}</span>
                 </div>
-                <div className="space-y-2">
-                  <Label className="text-xs text-muted-foreground">Availability</Label>
-                  <Select value={status} onValueChange={setStatus}>
-                    <SelectTrigger className="w-full">
-                      <SelectValue />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {STATUSES.map((st) => {
-                        const cfg = getStatus(st);
-                        return (
-                          <SelectItem key={st} value={st}>
-                            <span className="flex items-center gap-2">
-                              <span className={cn("w-2 h-2 rounded-full", cfg.dot)} />
-                              {cfg.label}
-                            </span>
-                          </SelectItem>
-                        );
-                      })}
-                    </SelectContent>
-                  </Select>
+                <div className="grid grid-cols-3 gap-2">
+                  {STATUSES.map((st) => {
+                    const cfg = getStatus(st);
+                    const active = unit.status === st;
+                    return (
+                      <Button
+                        key={st}
+                        variant={active ? "default" : "outline"}
+                        onClick={() => saveStatus(st)}
+                        disabled={saving}
+                        className={cn("gap-2 justify-center", active && cn(cfg.solid, "text-black border-0"))}
+                      >
+                        {saving ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <span className={cn("w-2 h-2 rounded-full", cfg.dot)} />}
+                        {t(`status.${st}`)}
+                      </Button>
+                    );
+                  })}
                 </div>
               </div>
             )}
           </div>
         </div>
-
-        {canEdit && (
-          <DialogFooter className="px-6 pb-6 pt-2">
-            <Button variant="outline" onClick={() => onOpenChange(false)} disabled={saving}>
-              Close
-            </Button>
-            <Button onClick={saveStatus} disabled={saving || status === unit.status}>
-              {saving ? <Loader2 className="w-4 h-4 mr-2 animate-spin" /> : null}
-              Save status
-            </Button>
-          </DialogFooter>
-        )}
       </DialogContent>
     </Dialog>
   );
