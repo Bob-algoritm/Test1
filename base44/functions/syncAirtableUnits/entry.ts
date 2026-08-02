@@ -132,28 +132,10 @@ export default async function(req) {
 
     const { accessToken } = await base44.asServiceRole.connectors.getConnection('airtable');
 
-    // Discover base + table: use the first base, then the first table that has
-    // our "Unit Number" field — robust to base/table renames.
+    // Discover ALL bases and sync every table that has the required columns.
     const basesRes = await airtableGet(accessToken, `${AIRTABLE_API}/meta/bases`);
     const bases = basesRes.bases || [];
     if (!bases.length) return Response.json({ error: 'No Airtable bases found' }, { status: 400 });
-    const baseId = bases[0].id;
-
-    const schemaRes = await airtableGet(accessToken, `${AIRTABLE_API}/meta/bases/${baseId}/tables`);
-    const tables = schemaRes.tables || [];
-    const table = tables.find(
-      (t) => t.fields?.some((f) => f.name === FIELDS.unitNumber)
-        && t.fields?.some((f) => f.name === FIELDS.project)
-    );
-    if (!table) {
-      return Response.json({
-        error: `No table with a "${FIELDS.unitNumber}" column was found in base "${bases[0].name}".`,
-        availableTables: tables.map((t) => ({ id: t.id, name: t.name, fields: t.fields?.map((f) => f.name) })),
-      }, { status: 400 });
-    }
-    const tableId = table.id;
-
-    const airRecords = await listAllRecords(accessToken, baseId, tableId);
 
     // Load existing units indexed by airtable_id for upsert.
     const existing = await base44.asServiceRole.entities.Unit.list('-updated_date', 500);
@@ -164,57 +146,78 @@ export default async function(req) {
       if (u.building_id) byKey.set(`${u.building_id}|${u.unit_number}`, u);
     }
 
-    let created = 0, updated = 0, skipped = 0;
+    let created = 0, updated = 0, skipped = 0, totalRecords = 0;
     const errors = [];
+    const syncedBases = [];
 
-    for (const rec of airRecords) {
-      try {
-        const unitNumber = String(cell(rec, 'unitNumber') ?? '').trim();
-        if (!unitNumber) { skipped++; continue; }
+    for (const base of bases) {
+      const schemaRes = await airtableGet(accessToken, `${AIRTABLE_API}/meta/bases/${base.id}/tables`);
+      const tables = schemaRes.tables || [];
+      const matchingTables = tables.filter(
+        (t) => t.fields?.some((f) => f.name === FIELDS.unitNumber)
+          && t.fields?.some((f) => f.name === FIELDS.project)
+      );
+      if (!matchingTables.length) continue;
 
-        const project = await resolveProject(base44, cell(rec, 'project'));
-        const building = await resolveBuilding(base44, project.id, cell(rec, 'building'));
-        const entrance = await resolveEntrance(base44, project.id, building.id, cell(rec, 'entrance'));
-        const floor = await resolveFloor(base44, project.id, building.id, cell(rec, 'floor'));
+      for (const table of matchingTables) {
+        const airRecords = await listAllRecords(accessToken, base.id, table.id);
+        totalRecords += airRecords.length;
+        let bCreated = 0, bUpdated = 0, bSkipped = 0;
 
-        const payload = {
-          unit_number: unitNumber,
-          project_id: project.id,
-          building_id: building.id,
-          entrance_id: entrance.id,
-          floor_id: floor.id,
-          floor_number: floor.floor_number,
-          status: normStatus(cell(rec, 'status')),
-          price: num(cell(rec, 'price')),
-          size_sqm: num(cell(rec, 'size')),
-          rooms: num(cell(rec, 'rooms')) ?? 0,
-          bedrooms: num(cell(rec, 'bedrooms')) ?? 0,
-          bathrooms: num(cell(rec, 'bathrooms')) ?? 0,
-          photo_url: urlField(rec, 'photoUrl') || urlField(rec, 'photoAttachment'),
-          floor_plan_url: urlField(rec, 'floorPlanUrl'),
-          video_url: urlField(rec, 'videoUrl'),
-          description: cell(rec, 'description') || '',
-          airtable_id: rec.id,
-        };
+        for (const rec of airRecords) {
+          try {
+            const unitNumber = String(cell(rec, 'unitNumber') ?? '').trim();
+            if (!unitNumber) { bSkipped++; continue; }
 
-        const match = byAirtableId.get(rec.id) || byKey.get(`${building.id}|${unitNumber}`);
-        if (match) {
-          await base44.asServiceRole.entities.Unit.update(match.id, payload);
-          updated++;
-        } else {
-          await base44.asServiceRole.entities.Unit.create(payload);
-          created++;
+            const project = await resolveProject(base44, cell(rec, 'project'));
+            const building = await resolveBuilding(base44, project.id, cell(rec, 'building'));
+            const entrance = await resolveEntrance(base44, project.id, building.id, cell(rec, 'entrance'));
+            const floor = await resolveFloor(base44, project.id, building.id, cell(rec, 'floor'));
+
+            const payload = {
+              unit_number: unitNumber,
+              project_id: project.id,
+              building_id: building.id,
+              entrance_id: entrance.id,
+              floor_id: floor.id,
+              floor_number: floor.floor_number,
+              status: normStatus(cell(rec, 'status')),
+              price: num(cell(rec, 'price')),
+              size_sqm: num(cell(rec, 'size')),
+              rooms: num(cell(rec, 'rooms')) ?? 0,
+              bedrooms: num(cell(rec, 'bedrooms')) ?? 0,
+              bathrooms: num(cell(rec, 'bathrooms')) ?? 0,
+              photo_url: urlField(rec, 'photoUrl') || urlField(rec, 'photoAttachment'),
+              floor_plan_url: urlField(rec, 'floorPlanUrl'),
+              video_url: urlField(rec, 'videoUrl'),
+              description: cell(rec, 'description') || '',
+              airtable_id: rec.id,
+            };
+
+            const match = byAirtableId.get(rec.id) || byKey.get(`${building.id}|${unitNumber}`);
+            if (match) {
+              await base44.asServiceRole.entities.Unit.update(match.id, payload);
+              bUpdated++;
+            } else {
+              const created2 = await base44.asServiceRole.entities.Unit.create(payload);
+              byAirtableId.set(rec.id, created2);
+              byKey.set(`${building.id}|${unitNumber}`, created2);
+              bCreated++;
+            }
+          } catch (e) {
+            errors.push({ id: rec.id, error: e.message });
+          }
         }
-      } catch (e) {
-        errors.push({ id: rec.id, error: e.message });
+
+        created += bCreated; updated += bUpdated; skipped += bSkipped;
+        syncedBases.push({ base: base.name, table: table.name, records: airRecords.length, created: bCreated, updated: bUpdated, skipped: bSkipped });
       }
     }
 
     return Response.json({
       ok: true,
-      base: bases[0].name,
-      table: table.name,
-      airtableRecords: airRecords.length,
+      bases: syncedBases,
+      airtableRecords: totalRecords,
       created,
       updated,
       skipped,
