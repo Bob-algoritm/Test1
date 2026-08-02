@@ -1,17 +1,14 @@
-import React, { useState } from "react";
-import { useQueryClient } from "@tanstack/react-query";
-import { base44 } from "@/api/base44Client";
+import React from "react";
 import {
   Dialog,
   DialogContent,
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import { Button } from "@/components/ui/button";
 import { Image } from "@/components/ui/image";
-import { getStatus, formatPrice, STATUSES } from "@/lib/unitStatus";
+import { getStatus, formatPrice } from "@/lib/unitStatus";
 import { cn } from "@/lib/utils";
-import { Bed, Bath, Maximize, Pencil, Loader2, ImageOff } from "lucide-react";
+import { Bed, Bath, Maximize, ImageOff } from "lucide-react";
 import { useLang } from "@/lib/i18n.jsx";
 
 function MediaBlock({ url, alt, label }) {
@@ -41,26 +38,12 @@ function DetailRow({ label, value }) {
   );
 }
 
-export default function UnitDetailDialog({ unit, open, onOpenChange, canEdit }) {
+export default function UnitDetailDialog({ unit, open, onOpenChange }) {
   const { t } = useLang();
-  const qc = useQueryClient();
-  const [saving, setSaving] = useState(false);
 
   if (!unit) return null;
 
   const s = getStatus(unit.status);
-
-  const saveStatus = async (newStatus) => {
-    if (newStatus === unit.status) return;
-    setSaving(true);
-    try {
-      await base44.entities.Unit.update(unit.id, { status: newStatus });
-      qc.invalidateQueries({ queryKey: ["units"] });
-      onOpenChange(false);
-    } finally {
-      setSaving(false);
-    }
-  };
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
@@ -116,33 +99,6 @@ export default function UnitDetailDialog({ unit, open, onOpenChange, canEdit }) 
               <div>
                 <div className="text-xs uppercase tracking-wide text-muted-foreground mb-1">{t("matrix.status")}</div>
                 <p className="text-sm text-muted-foreground leading-relaxed">{unit.description}</p>
-              </div>
-            )}
-
-            {canEdit && (
-              <div className="rounded-xl border border-border p-4 bg-sidebar/40">
-                <div className="flex items-center gap-2 mb-3">
-                  <Pencil className="w-4 h-4 text-muted-foreground" />
-                  <span className="text-sm font-medium">{t("matrix.changeStatus")}</span>
-                </div>
-                <div className="grid grid-cols-3 gap-2">
-                  {STATUSES.map((st) => {
-                    const cfg = getStatus(st);
-                    const active = unit.status === st;
-                    return (
-                      <Button
-                        key={st}
-                        variant={active ? "default" : "outline"}
-                        onClick={() => saveStatus(st)}
-                        disabled={saving}
-                        className={cn("gap-2 justify-center", active && cn(cfg.solid, "text-black border-0"))}
-                      >
-                        {saving ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <span className={cn("w-2 h-2 rounded-full", cfg.dot)} />}
-                        {t(`status.${st}`)}
-                      </Button>
-                    );
-                  })}
-                </div>
               </div>
             )}
           </div>
