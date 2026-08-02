@@ -23,6 +23,7 @@ import MatrixGrid from "@/components/MatrixGrid";
 import UnitTable from "@/components/UnitTable";
 import UnitDetailDialog from "@/components/UnitDetailDialog";
 import LanguageSwitcher from "@/components/LanguageSwitcher";
+import SyncButton from "@/components/SyncButton";
 import { useLang } from "@/lib/i18n.jsx";
 
 export default function Matrix() {
@@ -104,6 +105,7 @@ export default function Matrix() {
             </div>
           </Link>
           <div className="flex items-center gap-3">
+            {canEdit && <SyncButton />}
             <LanguageSwitcher />
             <Button asChild size="sm" variant="outline" className="gap-2">
               <Link to="/"><ArrowLeft className="w-4 h-4" /> {t("matrix.home")}</Link>
