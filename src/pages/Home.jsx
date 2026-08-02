@@ -131,23 +131,23 @@ export default function Home() {
 
       {/* About */}
       <section id="about" className="max-w-7xl mx-auto px-4 md:px-8 py-20">
+        <div className="text-center max-w-2xl mx-auto mb-12">
+          <h2 className="text-3xl font-bold tracking-tight">{t("about.title")}</h2>
+          <p className="mt-4 text-muted-foreground leading-relaxed">{t("about.body")}</p>
+        </div>
         <div className="grid md:grid-cols-2 gap-12 items-center">
-          <div>
-            <h2 className="text-3xl font-bold tracking-tight">{t("about.title")}</h2>
-            <p className="mt-4 text-muted-foreground leading-relaxed">{t("about.body")}</p>
-            <div className="mt-8 space-y-3">
-              {FEATURES.map((f) => (
-                <div key={f.title} className="flex gap-3">
-                  <span className="w-9 h-9 shrink-0 rounded-lg bg-primary/10 text-primary flex items-center justify-center">
-                    <f.icon className="w-4.5 h-4.5" />
-                  </span>
-                  <div>
-                    <div className="font-medium">{f.title}</div>
-                    <div className="text-sm text-muted-foreground">{f.text}</div>
-                  </div>
+          <div className="space-y-3">
+            {FEATURES.map((f) => (
+              <div key={f.title} className="flex gap-3">
+                <span className="w-9 h-9 shrink-0 rounded-lg bg-primary/10 text-primary flex items-center justify-center">
+                  <f.icon className="w-4.5 h-4.5" />
+                </span>
+                <div>
+                  <div className="font-medium">{f.title}</div>
+                  <div className="text-sm text-muted-foreground">{f.text}</div>
                 </div>
-              ))}
-            </div>
+              </div>
+            ))}
           </div>
           <div className="rounded-2xl overflow-hidden border border-border aspect-[4/3]">
             <img
@@ -162,7 +162,7 @@ export default function Home() {
       {/* Buy a house steps */}
       <section id="buy" className="border-y border-border bg-secondary/30">
         <div className="max-w-7xl mx-auto px-4 md:px-8 py-20">
-          <div className="mb-10">
+          <div className="text-center max-w-2xl mx-auto mb-10">
             <h2 className="text-3xl font-bold tracking-tight">{t("buy.title")}</h2>
             <p className="mt-2 text-muted-foreground">{t("buy.subtitle")}</p>
           </div>
@@ -180,12 +180,10 @@ export default function Home() {
 
       {/* Projects */}
       <section id="projects" className="max-w-7xl mx-auto px-4 md:px-8 py-20">
-        <div className="flex items-end justify-between gap-4 mb-10">
-          <div>
-            <h2 className="text-3xl font-bold tracking-tight">{t("projects.title")}</h2>
-            <p className="mt-2 text-muted-foreground">{t("projects.subtitle")}</p>
-          </div>
-          <Button variant="outline" className="hidden sm:flex gap-2" onClick={() => navigate("/matrix")}>
+        <div className="text-center max-w-2xl mx-auto mb-10">
+          <h2 className="text-3xl font-bold tracking-tight">{t("projects.title")}</h2>
+          <p className="mt-2 text-muted-foreground">{t("projects.subtitle")}</p>
+          <Button variant="outline" className="mt-5 gap-2" onClick={() => navigate("/matrix")}>
             <LayoutGrid className="w-4 h-4" /> {t("nav.availability")}
             <ArrowRight className="w-4 h-4" />
           </Button>
@@ -227,16 +225,16 @@ export default function Home() {
       {/* Contact */}
       <section id="contact" className="max-w-7xl mx-auto px-4 md:px-8 py-20">
         <div className="rounded-2xl border border-border bg-primary text-primary-foreground p-10 md:p-16">
+          <div className="text-center max-w-2xl mx-auto mb-10">
+            <h2 className="text-3xl font-bold tracking-tight">{t("contact.title")}</h2>
+            <p className="mt-3 text-primary-foreground/85">{t("contact.body")}</p>
+          </div>
           <div className="grid md:grid-cols-2 gap-10 items-center">
-            <div>
-              <h2 className="text-3xl font-bold tracking-tight">{t("contact.title")}</h2>
-              <p className="mt-3 text-primary-foreground/85">{t("contact.body")}</p>
-              <div className="mt-8 space-y-3">
-                <div className="font-medium text-lg">{t("contact.person")} — {t("contact.role")}</div>
-                <a href="tel:1359" className="flex items-center gap-3 hover:underline"><Phone className="w-5 h-5" /> 1359</a>
-                <a href="mailto:hello@unitmatrix.living" className="flex items-center gap-3 hover:underline"><Mail className="w-5 h-5" /> hello@unitmatrix.living</a>
-                <div className="flex items-center gap-3"><MapPin className="w-5 h-5" /> 1 Skyline Plaza, Downtown</div>
-              </div>
+            <div className="space-y-3">
+              <div className="font-medium text-lg">{t("contact.person")} — {t("contact.role")}</div>
+              <a href="tel:1359" className="flex items-center gap-3 hover:underline"><Phone className="w-5 h-5" /> 1359</a>
+              <a href="mailto:hello@unitmatrix.living" className="flex items-center gap-3 hover:underline"><Mail className="w-5 h-5" /> hello@unitmatrix.living</a>
+              <div className="flex items-center gap-3"><MapPin className="w-5 h-5" /> 1 Skyline Plaza, Downtown</div>
             </div>
             <ContactForm />
           </div>
