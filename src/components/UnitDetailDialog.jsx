@@ -8,7 +8,7 @@ import {
 import { Image } from "@/components/ui/image";
 import { getStatus, formatPrice } from "@/lib/unitStatus";
 import { cn } from "@/lib/utils";
-import { Bed, Bath, Maximize, ImageOff } from "lucide-react";
+import { Bed, Bath, Maximize, ImageOff, Video } from "lucide-react";
 import { useLang } from "@/lib/i18n.jsx";
 
 function MediaBlock({ url, alt, label }) {
@@ -60,8 +60,20 @@ export default function UnitDetailDialog({ unit, open, onOpenChange }) {
 
         <div className="grid md:grid-cols-2 gap-6 px-6 pb-2">
           <div className="space-y-4">
-            <MediaBlock url={unit.photo_url} alt={`Unit ${unit.unit_number}`} label="Photo" />
             <MediaBlock url={unit.floor_plan_url} alt="Floor plan" label="Floor Plan" />
+            <div>
+              <div className="text-xs uppercase tracking-wide text-muted-foreground mb-2">Video</div>
+              {unit.video_url ? (
+                <div className="aspect-video rounded-xl overflow-hidden border border-border bg-black">
+                  <video src={unit.video_url} controls className="w-full h-full object-contain" />
+                </div>
+              ) : (
+                <div className="aspect-video rounded-xl border border-border bg-sidebar/40 flex flex-col items-center justify-center text-muted-foreground">
+                  <Video className="w-6 h-6 mb-1" />
+                  <span className="text-xs">No video uploaded</span>
+                </div>
+              )}
+            </div>
           </div>
 
           <div className="space-y-4">

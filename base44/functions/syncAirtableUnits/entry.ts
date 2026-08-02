@@ -18,6 +18,7 @@ const FIELDS = {
   photoUrl: 'Photo URL',
   photoAttachment: 'Photo',
   floorPlanUrl: 'Floor plan',
+  videoUrl: 'Video',
   description: 'Description',
 };
 
@@ -189,6 +190,7 @@ export default async function(req) {
           bathrooms: num(cell(rec, 'bathrooms')) ?? 0,
           photo_url: urlField(rec, 'photoUrl') || urlField(rec, 'photoAttachment'),
           floor_plan_url: urlField(rec, 'floorPlanUrl'),
+          video_url: urlField(rec, 'videoUrl'),
           description: cell(rec, 'description') || '',
           airtable_id: rec.id,
         };

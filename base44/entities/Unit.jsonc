@@ -60,6 +60,10 @@
       "type": "string",
       "description": "Floor plan image URL"
     },
+    "video_url": {
+      "type": "string",
+      "description": "Video tour URL of the unit"
+    },
     "description": {
       "type": "string",
       "description": "Detailed description of the unit"
