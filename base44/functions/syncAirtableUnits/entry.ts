@@ -5,19 +5,19 @@ const AIRTABLE_API = 'https://api.airtable.com/v0';
 // Airtable column name -> how it's used. If you rename a column in Airtable,
 // update the corresponding key here only.
 const FIELDS = {
-  unitNumber: 'Unit Number',
+  unitNumber: 'Unit number',
   project: 'Project',
   building: 'Building',
   entrance: 'Entrance',
   floor: 'Floor',
   status: 'Status',
   price: 'Price',
-  size: 'Size (sqm)',
+  size: 'Size',
   bedrooms: 'Bedrooms',
   bathrooms: 'Bathrooms',
   photoUrl: 'Photo URL',
   photoAttachment: 'Photo',
-  floorPlanUrl: 'Floor Plan URL',
+  floorPlanUrl: 'Floor plan',
   description: 'Description',
 };
 
@@ -37,6 +37,19 @@ function firstAttachmentUrl(record, key) {
   if (!Array.isArray(v) || !v.length) return undefined;
   const first = v[0];
   return first?.url || first?.thumbnails?.large?.url;
+}
+
+// Accept either a plain text URL or an attachment field for a URL column.
+function urlField(record, key) {
+  const name = FIELDS[key];
+  const v = record.fields?.[name];
+  if (v == null) return undefined;
+  if (typeof v === 'string') return v;
+  if (Array.isArray(v)) {
+    const first = v[0];
+    return first?.url || first?.thumbnails?.large?.url;
+  }
+  return undefined;
 }
 
 function num(v) {
@@ -126,7 +139,10 @@ export default async function(req) {
 
     const schemaRes = await airtableGet(accessToken, `${AIRTABLE_API}/meta/bases/${baseId}/tables`);
     const tables = schemaRes.tables || [];
-    const table = tables.find((t) => t.fields?.some((f) => f.name === FIELDS.unitNumber));
+    const table = tables.find(
+      (t) => t.fields?.some((f) => f.name === FIELDS.unitNumber)
+        && t.fields?.some((f) => f.name === FIELDS.project)
+    );
     if (!table) {
       return Response.json({
         error: `No table with a "${FIELDS.unitNumber}" column was found in base "${bases[0].name}".`,
@@ -171,8 +187,8 @@ export default async function(req) {
           size_sqm: num(cell(rec, 'size')),
           bedrooms: num(cell(rec, 'bedrooms')) ?? 0,
           bathrooms: num(cell(rec, 'bathrooms')) ?? 0,
-          photo_url: cell(rec, 'photoUrl') || firstAttachmentUrl(rec, 'photoAttachment'),
-          floor_plan_url: cell(rec, 'floorPlanUrl'),
+          photo_url: urlField(rec, 'photoUrl') || urlField(rec, 'photoAttachment'),
+          floor_plan_url: urlField(rec, 'floorPlanUrl'),
           description: cell(rec, 'description') || '',
           airtable_id: rec.id,
         };
