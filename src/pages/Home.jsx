@@ -47,8 +47,8 @@ export default function Home() {
     <div className="bg-background text-foreground overflow-x-hidden">
       {/* Sticky guide bar */}
       <header className="sticky top-0 z-40 border-b border-border bg-background/85 backdrop-blur-xl">
-        <div className="max-w-7xl mx-auto px-4 md:px-8 h-auto min-h-16 py-2 flex flex-wrap items-center justify-between gap-3">
-          <div className="flex items-center gap-2.5">
+        <div className="max-w-7xl mx-auto px-4 md:px-8 h-auto min-h-16 py-2 flex flex-wrap items-center justify-between md:grid md:grid-cols-[1fr_auto_1fr] gap-3">
+          <div className="flex items-center gap-2.5 justify-self-start">
             <div className="w-9 h-9 rounded-xl bg-primary flex items-center justify-center">
               <Building2 className="w-5 h-5 text-primary-foreground" />
             </div>
@@ -56,7 +56,7 @@ export default function Home() {
               <div className="font-semibold tracking-tight">Yangi Hayot</div>
             </div>
           </div>
-          <nav className="hidden md:flex items-center gap-1">
+          <nav className="hidden md:flex items-center justify-self-center gap-1">
             {GUIDE.map((g) => (
               <button
                 key={g.id || g.to}
@@ -68,7 +68,7 @@ export default function Home() {
               </button>
             ))}
           </nav>
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-3 justify-self-end">
             <LanguageSwitcher />
             <a href="tel:1359" className="hidden lg:flex items-center gap-2 text-sm font-medium text-foreground hover:text-primary transition">
               <Phone className="w-4 h-4" /> 1359
@@ -131,23 +131,23 @@ export default function Home() {
 
       {/* About */}
       <section id="about" className="max-w-7xl mx-auto px-4 md:px-8 py-20">
-        <div className="text-center max-w-2xl mx-auto mb-12">
-          <h2 className="text-3xl font-bold tracking-tight">{t("about.title")}</h2>
-          <p className="mt-4 text-muted-foreground leading-relaxed">{t("about.body")}</p>
-        </div>
         <div className="grid md:grid-cols-2 gap-12 items-center">
-          <div className="space-y-3">
-            {FEATURES.map((f) => (
-              <div key={f.title} className="flex gap-3">
-                <span className="w-9 h-9 shrink-0 rounded-lg bg-primary/10 text-primary flex items-center justify-center">
-                  <f.icon className="w-4.5 h-4.5" />
-                </span>
-                <div>
-                  <div className="font-medium">{f.title}</div>
-                  <div className="text-sm text-muted-foreground">{f.text}</div>
+          <div>
+            <h2 className="text-3xl font-bold tracking-tight">{t("about.title")}</h2>
+            <p className="mt-4 text-muted-foreground leading-relaxed">{t("about.body")}</p>
+            <div className="mt-8 space-y-3">
+              {FEATURES.map((f) => (
+                <div key={f.title} className="flex gap-3">
+                  <span className="w-9 h-9 shrink-0 rounded-lg bg-primary/10 text-primary flex items-center justify-center">
+                    <f.icon className="w-4.5 h-4.5" />
+                  </span>
+                  <div>
+                    <div className="font-medium">{f.title}</div>
+                    <div className="text-sm text-muted-foreground">{f.text}</div>
+                  </div>
                 </div>
-              </div>
-            ))}
+              ))}
+            </div>
           </div>
           <div className="rounded-2xl overflow-hidden border border-border aspect-[4/3]">
             <img
@@ -162,9 +162,9 @@ export default function Home() {
       {/* Buy a house steps */}
       <section id="buy" className="border-y border-border bg-secondary/30">
         <div className="max-w-7xl mx-auto px-4 md:px-8 py-20">
-          <div className="text-center max-w-2xl mx-auto mb-10">
+          <div className="text-center max-w-2xl mx-auto mb-12">
             <h2 className="text-3xl font-bold tracking-tight">{t("buy.title")}</h2>
-            <p className="mt-2 text-muted-foreground">{t("buy.subtitle")}</p>
+            <p className="mt-3 text-muted-foreground">{t("buy.subtitle")}</p>
           </div>
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
             {STEPS.map((s) => (
@@ -180,10 +180,12 @@ export default function Home() {
 
       {/* Projects */}
       <section id="projects" className="max-w-7xl mx-auto px-4 md:px-8 py-20">
-        <div className="text-center max-w-2xl mx-auto mb-10">
-          <h2 className="text-3xl font-bold tracking-tight">{t("projects.title")}</h2>
-          <p className="mt-2 text-muted-foreground">{t("projects.subtitle")}</p>
-          <Button variant="outline" className="mt-5 gap-2" onClick={() => navigate("/matrix")}>
+        <div className="flex items-end justify-between gap-4 mb-10">
+          <div>
+            <h2 className="text-3xl font-bold tracking-tight">{t("projects.title")}</h2>
+            <p className="mt-2 text-muted-foreground">{t("projects.subtitle")}</p>
+          </div>
+          <Button variant="outline" className="hidden sm:flex gap-2" onClick={() => navigate("/matrix")}>
             <LayoutGrid className="w-4 h-4" /> {t("nav.availability")}
             <ArrowRight className="w-4 h-4" />
           </Button>
@@ -225,16 +227,16 @@ export default function Home() {
       {/* Contact */}
       <section id="contact" className="max-w-7xl mx-auto px-4 md:px-8 py-20">
         <div className="rounded-2xl border border-border bg-primary text-primary-foreground p-10 md:p-16">
-          <div className="text-center max-w-2xl mx-auto mb-10">
-            <h2 className="text-3xl font-bold tracking-tight">{t("contact.title")}</h2>
-            <p className="mt-3 text-primary-foreground/85">{t("contact.body")}</p>
-          </div>
           <div className="grid md:grid-cols-2 gap-10 items-center">
-            <div className="space-y-3">
-              <div className="font-medium text-lg">{t("contact.person")} — {t("contact.role")}</div>
-              <a href="tel:1359" className="flex items-center gap-3 hover:underline"><Phone className="w-5 h-5" /> 1359</a>
-              <a href="mailto:hello@unitmatrix.living" className="flex items-center gap-3 hover:underline"><Mail className="w-5 h-5" /> hello@unitmatrix.living</a>
-              <div className="flex items-center gap-3"><MapPin className="w-5 h-5" /> 1 Skyline Plaza, Downtown</div>
+            <div>
+              <h2 className="text-3xl font-bold tracking-tight">{t("contact.title")}</h2>
+              <p className="mt-3 text-primary-foreground/85">{t("contact.body")}</p>
+              <div className="mt-8 space-y-3">
+                <div className="font-medium text-lg">{t("contact.person")} — {t("contact.role")}</div>
+                <a href="tel:1359" className="flex items-center gap-3 hover:underline"><Phone className="w-5 h-5" /> 1359</a>
+                <a href="mailto:hello@unitmatrix.living" className="flex items-center gap-3 hover:underline"><Mail className="w-5 h-5" /> hello@unitmatrix.living</a>
+                <div className="flex items-center gap-3"><MapPin className="w-5 h-5" /> 1 Skyline Plaza, Downtown</div>
+              </div>
             </div>
             <ContactForm />
           </div>
