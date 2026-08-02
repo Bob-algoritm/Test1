@@ -8,7 +8,7 @@ import {
 import { Image } from "@/components/ui/image";
 import { getStatus, formatPrice } from "@/lib/unitStatus";
 import { cn } from "@/lib/utils";
-import { Bed, Bath, Maximize, ImageOff, Video } from "lucide-react";
+import { Maximize, DoorOpen, ImageOff, Video } from "lucide-react";
 import { useLang } from "@/lib/i18n.jsx";
 
 function MediaBlock({ url, alt, label }) {
@@ -77,21 +77,16 @@ export default function UnitDetailDialog({ unit, open, onOpenChange }) {
           </div>
 
           <div className="space-y-4">
-            <div className="grid grid-cols-3 gap-3">
+            <div className="grid grid-cols-2 gap-3">
               <div className="rounded-xl border border-border p-3 text-center">
                 <Maximize className="w-4 h-4 mx-auto text-muted-foreground mb-1" />
                 <div className="text-sm font-semibold">{unit.size_sqm ? `${unit.size_sqm}` : "—"}</div>
                 <div className="text-[10px] text-muted-foreground uppercase">m²</div>
               </div>
               <div className="rounded-xl border border-border p-3 text-center">
-                <Bed className="w-4 h-4 mx-auto text-muted-foreground mb-1" />
-                <div className="text-sm font-semibold">{unit.bedrooms ?? "—"}</div>
-                <div className="text-[10px] text-muted-foreground uppercase">{t("matrix.beds")}</div>
-              </div>
-              <div className="rounded-xl border border-border p-3 text-center">
-                <Bath className="w-4 h-4 mx-auto text-muted-foreground mb-1" />
-                <div className="text-sm font-semibold">{unit.bathrooms ?? "—"}</div>
-                <div className="text-[10px] text-muted-foreground uppercase">{t("matrix.baths")}</div>
+                <DoorOpen className="w-4 h-4 mx-auto text-muted-foreground mb-1" />
+                <div className="text-sm font-semibold">{unit.rooms ?? "—"}</div>
+                <div className="text-[10px] text-muted-foreground uppercase">{t("matrix.rooms")}</div>
               </div>
             </div>
 
@@ -103,8 +98,7 @@ export default function UnitDetailDialog({ unit, open, onOpenChange }) {
             <div>
               <DetailRow label={t("matrix.floor")} value={unit.floor_number ?? "—"} />
               <DetailRow label={t("matrix.size")} value={unit.size_sqm ? `${unit.size_sqm} m²` : "—"} />
-              <DetailRow label={t("matrix.beds")} value={unit.bedrooms ?? "—"} />
-              <DetailRow label={t("matrix.baths")} value={unit.bathrooms ?? "—"} />
+              <DetailRow label={t("matrix.rooms")} value={unit.rooms ?? "—"} />
             </div>
 
             {unit.description && (

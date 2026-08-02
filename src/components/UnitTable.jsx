@@ -46,8 +46,7 @@ export default function UnitTable({ units, statusFilter, onStatusFilter, onSelec
               <th className="text-left font-medium px-4 py-3">{t("matrix.unit")}</th>
               <th className="text-left font-medium px-4 py-3">{t("matrix.floor")}</th>
               <th className="text-left font-medium px-4 py-3">{t("matrix.size")}</th>
-              <th className="text-left font-medium px-4 py-3">{t("matrix.beds")}</th>
-              <th className="text-left font-medium px-4 py-3">{t("matrix.baths")}</th>
+              <th className="text-left font-medium px-4 py-3">{t("matrix.rooms")}</th>
               <th className="text-right font-medium px-4 py-3">{t("matrix.price")}</th>
               <th className="text-left font-medium px-4 py-3">{t("matrix.status")}</th>
             </tr>
@@ -55,7 +54,7 @@ export default function UnitTable({ units, statusFilter, onStatusFilter, onSelec
           <tbody className="divide-y divide-border">
             {sorted.length === 0 ? (
               <tr>
-                <td colSpan={7} className="px-4 py-10 text-center text-muted-foreground">
+                <td colSpan={6} className="px-4 py-10 text-center text-muted-foreground">
                   {t("matrix.noUnitsFilter")}
                 </td>
               </tr>
@@ -71,8 +70,7 @@ export default function UnitTable({ units, statusFilter, onStatusFilter, onSelec
                     <td className="px-4 py-3 font-medium">{t("matrix.unit")} {u.unit_number}</td>
                     <td className="px-4 py-3 text-muted-foreground">{u.floor_number ?? "—"}</td>
                     <td className="px-4 py-3">{u.size_sqm ? `${u.size_sqm} m²` : "—"}</td>
-                    <td className="px-4 py-3">{u.bedrooms ?? "—"}</td>
-                    <td className="px-4 py-3">{u.bathrooms ?? "—"}</td>
+                    <td className="px-4 py-3">{u.rooms ?? "—"}</td>
                     <td className="px-4 py-3 text-right font-medium">{formatPrice(u.price)}</td>
                     <td className="px-4 py-3">
                       <span className={cn("inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-xs font-medium", s.bg, s.text)}>

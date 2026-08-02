@@ -42,6 +42,11 @@
       "default": "available",
       "description": "Availability status of the unit"
     },
+    "rooms": {
+      "type": "number",
+      "default": 0,
+      "description": "Total number of rooms in the unit"
+    },
     "bedrooms": {
       "type": "number",
       "default": 0,
