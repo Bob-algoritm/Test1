@@ -12,7 +12,7 @@ const FIELDS = {
   floor: 'Floor',
   status: 'Status',
   price: 'Price',
-  size: 'Size',
+  size: ['Size', 'Size (sqm)'],
   rooms: 'Rooms',
   bedrooms: 'Bedrooms',
   bathrooms: 'Bathrooms',
@@ -24,13 +24,17 @@ const FIELDS = {
 };
 
 function cell(record, key) {
-  const name = FIELDS[key];
-  if (!name) return undefined;
-  const v = record.fields?.[name];
-  if (v === null || v === undefined) return undefined;
-  // Airtable returns arrays for some field types; take first element for scalar text/number
-  if (Array.isArray(v)) return v.length ? v[0] : undefined;
-  return v;
+  const names = FIELDS[key];
+  if (!names) return undefined;
+  const arr = Array.isArray(names) ? names : [names];
+  for (const name of arr) {
+    const v = record.fields?.[name];
+    if (v === null || v === undefined) continue;
+    // Airtable returns arrays for some field types; take first element for scalar text/number
+    if (Array.isArray(v)) return v.length ? v[0] : undefined;
+    return v;
+  }
+  return undefined;
 }
 
 function firstAttachmentUrl(record, key) {
