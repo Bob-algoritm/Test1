@@ -37,9 +37,9 @@ export const getStatus = (s) => STATUS_CONFIG[s] || STATUS_CONFIG.available;
 
 export const formatPrice = (value) => {
   if (value == null) return "—";
-  return new Intl.NumberFormat("en-US", {
+  return new Intl.NumberFormat("ru-RU", {
     style: "currency",
-    currency: "USD",
+    currency: "UZS",
     maximumFractionDigits: 0,
   }).format(value);
 };
