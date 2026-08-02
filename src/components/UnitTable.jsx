@@ -67,7 +67,7 @@ export default function UnitTable({ units, statusFilter, onStatusFilter, onSelec
                     onClick={() => onSelect(u)}
                     className="cursor-pointer hover:bg-sidebar/40 transition"
                   >
-                    <td className="px-4 py-3 font-medium">{t("matrix.unit")} {u.unit_number}</td>
+                    <td className="px-4 py-3 font-medium">{u.unit_number}</td>
                     <td className="px-4 py-3 text-muted-foreground">{u.floor_number ?? "—"}</td>
                     <td className="px-4 py-3">{u.size_sqm ? `${u.size_sqm} m²` : "—"}</td>
                     <td className="px-4 py-3">{u.rooms ?? "—"}</td>

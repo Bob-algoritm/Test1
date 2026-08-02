@@ -22,7 +22,7 @@ function UnitCard({ unit, onClick }) {
       <div className="p-3.5">
         <div className="flex items-start justify-between gap-2">
           <div>
-            <div className="font-semibold leading-tight">{t("matrix.unit")} {unit.unit_number}</div>
+            <div className="font-semibold leading-tight">{unit.unit_number}</div>
             <div className="text-xs text-muted-foreground mt-0.5">
               {unit.size_sqm ? `${unit.size_sqm} m²` : t("matrix.sizeNone")}
             </div>
