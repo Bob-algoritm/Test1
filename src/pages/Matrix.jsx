@@ -4,6 +4,7 @@ import { useAuth } from "@/lib/AuthContext";
 import {
   useProjects,
   useBuildings,
+  useEntrances,
   useFloors,
   useUnits,
 } from "@/hooks/useUnitData";
@@ -31,11 +32,13 @@ export default function Matrix() {
 
   const { data: projects = [], isLoading: lp } = useProjects();
   const { data: buildings = [], isLoading: lb } = useBuildings();
+  const { data: entrances = [], isLoading: le } = useEntrances();
   const { data: floors = [], isLoading: lf } = useFloors();
   const { data: units = [], isLoading: lu } = useUnits();
 
   const [projectId, setProjectId] = useState("");
   const [buildingId, setBuildingId] = useState("");
+  const [entranceId, setEntranceId] = useState("");
   const [view, setView] = useState("grid");
   const [statusFilter, setStatusFilter] = useState("all");
   const [selected, setSelected] = useState(null);
@@ -48,8 +51,16 @@ export default function Matrix() {
       ? buildingId
       : projectBuildings[0]?.id || "";
 
+  const buildingEntrances = entrances.filter((e) => e.building_id === effectiveBuilding);
+  const effectiveEntrance =
+    entranceId && buildingEntrances.some((e) => e.id === entranceId)
+      ? entranceId
+      : buildingEntrances[0]?.id || "";
+
   const buildingFloors = floors.filter((f) => f.building_id === effectiveBuilding);
-  const buildingUnits = units.filter((u) => u.building_id === effectiveBuilding);
+  const buildingUnits = units.filter(
+    (u) => u.building_id === effectiveBuilding && (!effectiveEntrance || u.entrance_id === effectiveEntrance)
+  );
 
   const stats = useMemo(() => {
     const counts = { available: 0, reserved: 0, occupied: 0 };
@@ -59,7 +70,7 @@ export default function Matrix() {
     return counts;
   }, [buildingUnits]);
 
-  const loading = lp || lb || lf || lu;
+  const loading = lp || lb || le || lf || lu;
 
   if (loading) {
     return (
@@ -148,7 +159,7 @@ export default function Matrix() {
 
           <Select
             value={effectiveBuilding}
-            onValueChange={setBuildingId}
+            onValueChange={(v) => { setBuildingId(v); setEntranceId(""); }}
             disabled={!projectBuildings.length}
           >
             <SelectTrigger className="w-[200px]">
@@ -157,6 +168,21 @@ export default function Matrix() {
             <SelectContent>
               {projectBuildings.map((b) => (
                 <SelectItem key={b.id} value={b.id}>{b.name}</SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+
+          <Select
+            value={effectiveEntrance}
+            onValueChange={setEntranceId}
+            disabled={!buildingEntrances.length}
+          >
+            <SelectTrigger className="w-[200px]">
+              <SelectValue placeholder={t("matrix.selectEntrance")} />
+            </SelectTrigger>
+            <SelectContent>
+              {buildingEntrances.map((e) => (
+                <SelectItem key={e.id} value={e.id}>{e.name}</SelectItem>
               ))}
             </SelectContent>
           </Select>
@@ -181,6 +207,11 @@ export default function Matrix() {
         <EmptyState
           title={t("matrix.noBuildingsTitle")}
           message={t("matrix.noBuildingsMsg")}
+        />
+      ) : !effectiveEntrance ? (
+        <EmptyState
+          title={t("matrix.noEntrancesTitle")}
+          message={t("matrix.noEntrancesMsg")}
         />
       ) : view === "grid" ? (
         <MatrixGrid floors={buildingFloors} units={buildingUnits} onSelect={setSelected} />

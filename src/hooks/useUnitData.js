@@ -7,6 +7,9 @@ export const useProjects = () =>
 export const useBuildings = () =>
   useQuery({ queryKey: ["buildings"], queryFn: () => base44.entities.Building.list("-created_date") });
 
+export const useEntrances = () =>
+  useQuery({ queryKey: ["entrances"], queryFn: () => base44.entities.Entrance.list("-created_date") });
+
 export const useFloors = () =>
   useQuery({ queryKey: ["floors"], queryFn: () => base44.entities.Floor.list("-created_date") });
 

@@ -12,6 +12,10 @@
       "type": "string",
       "description": "Owning building id"
     },
+    "entrance_id": {
+      "type": "string",
+      "description": "Owning entrance / \u043f\u043e\u0434\u044a\u0435\u0437\u0434 id"
+    },
     "floor_id": {
       "type": "string",
       "description": "Owning floor id"

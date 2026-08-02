@@ -1,0 +1,23 @@
+{
+  "name": "Entrance",
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string",
+      "description": "Entrance / \u043f\u043e\u0434\u044a\u0435\u0437\u0434 label (e.g. \u041f\u043e\u0434\u044a\u0435\u0437\u0434 1)"
+    },
+    "building_id": {
+      "type": "string",
+      "description": "Owning building id"
+    },
+    "project_id": {
+      "type": "string",
+      "description": "Owning project id (denormalized for easy filtering)"
+    }
+  },
+  "required": [
+    "name",
+    "building_id",
+    "project_id"
+  ]
+}
