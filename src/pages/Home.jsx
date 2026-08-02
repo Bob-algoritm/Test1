@@ -70,8 +70,8 @@ export default function Home() {
           </nav>
           <div className="flex items-center gap-3">
             <LanguageSwitcher />
-            <a href="tel:+15550102025" className="hidden lg:flex items-center gap-2 text-sm font-medium text-foreground hover:text-primary transition">
-              <Phone className="w-4 h-4" /> +1 (555) 010-2025
+            <a href="tel:1359" className="hidden lg:flex items-center gap-2 text-sm font-medium text-foreground hover:text-primary transition">
+              <Phone className="w-4 h-4" /> 1359
             </a>
             <Button size="sm" className="gap-2" onClick={() => navigate("/matrix")}>
               {t("header.browseHomes")} <ArrowRight className="w-4 h-4" />
@@ -162,9 +162,9 @@ export default function Home() {
       {/* Buy a house steps */}
       <section id="buy" className="border-y border-border bg-secondary/30">
         <div className="max-w-7xl mx-auto px-4 md:px-8 py-20">
-          <div className="text-center max-w-2xl mx-auto mb-12">
+          <div className="mb-10">
             <h2 className="text-3xl font-bold tracking-tight">{t("buy.title")}</h2>
-            <p className="mt-3 text-muted-foreground">{t("buy.subtitle")}</p>
+            <p className="mt-2 text-muted-foreground">{t("buy.subtitle")}</p>
           </div>
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
             {STEPS.map((s) => (
@@ -233,7 +233,7 @@ export default function Home() {
               <p className="mt-3 text-primary-foreground/85">{t("contact.body")}</p>
               <div className="mt-8 space-y-3">
                 <div className="font-medium text-lg">{t("contact.person")} — {t("contact.role")}</div>
-                <a href="tel:+15550102025" className="flex items-center gap-3 hover:underline"><Phone className="w-5 h-5" /> +1 (555) 010-2025</a>
+                <a href="tel:1359" className="flex items-center gap-3 hover:underline"><Phone className="w-5 h-5" /> 1359</a>
                 <a href="mailto:hello@unitmatrix.living" className="flex items-center gap-3 hover:underline"><Mail className="w-5 h-5" /> hello@unitmatrix.living</a>
                 <div className="flex items-center gap-3"><MapPin className="w-5 h-5" /> 1 Skyline Plaza, Downtown</div>
               </div>
