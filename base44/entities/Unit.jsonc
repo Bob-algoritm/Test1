@@ -63,6 +63,10 @@
     "description": {
       "type": "string",
       "description": "Detailed description of the unit"
+    },
+    "airtable_id": {
+      "type": "string",
+      "description": "Airtable record id \u2014 stable anchor for syncing units from Airtable"
     }
   },
   "required": [
