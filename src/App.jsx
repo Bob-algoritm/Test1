@@ -8,6 +8,7 @@ import { LanguageProvider } from '@/lib/i18n.jsx';
 import ScrollToTop from './components/ScrollToTop';
 import Home from '@/pages/Home';
 import Matrix from '@/pages/Matrix';
+import Projects from '@/pages/Projects';
 
 function App() {
   return (
@@ -19,6 +20,7 @@ function App() {
             <Routes>
               <Route path="/" element={<Home />} />
               <Route path="/matrix" element={<Matrix />} />
+              <Route path="/projects" element={<Projects />} />
               <Route path="*" element={<PageNotFound />} />
             </Routes>
           </LanguageProvider>

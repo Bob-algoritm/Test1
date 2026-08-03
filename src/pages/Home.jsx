@@ -22,7 +22,7 @@ export default function Home() {
 
   const GUIDE = [
     { id: "buy", label: t("nav.buy"), icon: HomeIcon },
-    { id: "projects", label: t("nav.projects"), icon: Building2 },
+    { to: "/projects", label: t("nav.projects"), icon: Building2 },
     { to: "/matrix", label: t("nav.availability"), icon: LayoutGrid },
     { id: "about", label: t("nav.about"), icon: CheckCircle2 },
     { id: "contact", label: t("nav.contact"), icon: Mail },
@@ -100,7 +100,7 @@ export default function Home() {
               <Button size="lg" className="gap-2" onClick={() => navigate("/matrix")}>
                 <LayoutGrid className="w-5 h-5" /> {t("hero.seeAvailability")}
               </Button>
-              <Button size="lg" variant="secondary" className="gap-2 bg-white text-emerald-900 hover:bg-white/90" onClick={() => scrollTo("projects")}>
+              <Button size="lg" variant="secondary" className="gap-2 bg-white text-emerald-900 hover:bg-white/90" onClick={() => navigate("/projects")}>
                 <Building2 className="w-5 h-5" /> {t("hero.ourProjects")}
               </Button>
             </div>
