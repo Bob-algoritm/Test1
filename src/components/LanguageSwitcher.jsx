@@ -13,7 +13,7 @@ export default function LanguageSwitcher() {
   const current = LANGS.find((l) => l.value === lang)?.label ?? lang.toUpperCase();
   return (
     <Select value={lang} onValueChange={setLang}>
-      <SelectTrigger className="w-[88px] h-9 gap-1.5 text-sm" aria-label="Language">
+      <SelectTrigger className="w-[104px] h-9 gap-1.5 text-sm" aria-label="Language">
         <Globe className="w-3.5 h-3.5" />
         <SelectValue>{current}</SelectValue>
       </SelectTrigger>
