@@ -50,14 +50,14 @@ export default function Home() {
       <header className="sticky top-0 z-40 border-b border-border bg-background/85 backdrop-blur-xl">
         {/* Mobile */}
         <div className="md:hidden max-w-7xl mx-auto px-4 h-16 flex items-center justify-between gap-2">
-          <LanguageSwitcher />
+          <LanguageSwitcher className="w-[84px] h-8 gap-1 text-xs" />
           <div className="flex items-center gap-2.5">
             <Logo />
             <div className="leading-none font-semibold tracking-tight">Yangi Hayot</div>
           </div>
-          <a href="tel:1359" className="flex items-center gap-2 text-sm font-medium text-foreground hover:text-primary transition">
-            <span className="w-8 h-8 rounded-full bg-primary text-primary-foreground flex items-center justify-center">
-              <Phone className="w-4 h-4" />
+          <a href="tel:1359" className="flex items-center gap-1.5 text-xs font-medium text-foreground hover:text-primary transition">
+            <span className="w-7 h-7 rounded-full bg-primary text-primary-foreground flex items-center justify-center">
+              <Phone className="w-3.5 h-3.5" />
             </span>
             <span className="font-semibold">1359</span>
           </a>

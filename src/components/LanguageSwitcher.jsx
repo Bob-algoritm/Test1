@@ -8,12 +8,12 @@ const LANGS = [
   { value: "uz", label: "UZB" },
 ];
 
-export default function LanguageSwitcher() {
+export default function LanguageSwitcher({ className = "w-[104px] h-9 gap-1.5 text-sm" }) {
   const { lang, setLang } = useLang();
   const current = LANGS.find((l) => l.value === lang)?.label ?? lang.toUpperCase();
   return (
     <Select value={lang} onValueChange={setLang}>
-      <SelectTrigger className="w-[104px] h-9 gap-1.5 text-sm" aria-label="Language">
+      <SelectTrigger className={className} aria-label="Language">
         <Globe className="w-3.5 h-3.5" />
         <SelectValue>{current}</SelectValue>
       </SelectTrigger>
