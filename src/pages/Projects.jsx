@@ -4,6 +4,7 @@ import { useProjects } from "@/hooks/useUnitData";
 import { Image } from "@/components/ui/image";
 import { Button } from "@/components/ui/button";
 import LanguageSwitcher from "@/components/LanguageSwitcher";
+import Logo from "@/components/Logo";
 import { useLang } from "@/lib/i18n.jsx";
 import {
   Building2, ArrowLeft, MapPin, ChevronDown, ArrowRight, LayoutGrid,
@@ -62,9 +63,7 @@ export default function Projects() {
       <header className="sticky top-0 z-40 border-b border-border bg-background/85 backdrop-blur-xl">
         <div className="max-w-7xl mx-auto px-4 md:px-8 h-16 flex items-center justify-between gap-4">
           <Link to="/" className="flex items-center gap-2.5">
-            <div className="w-9 h-9 rounded-xl bg-primary flex items-center justify-center">
-              <Building2 className="w-5 h-5 text-primary-foreground" />
-            </div>
+            <Logo />
             <div className="font-semibold tracking-tight">Yangi Hayot</div>
           </Link>
           <div className="flex items-center gap-3">

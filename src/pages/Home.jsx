@@ -5,6 +5,7 @@ import { Image } from "@/components/ui/image";
 import { Button } from "@/components/ui/button";
 import LanguageSwitcher from "@/components/LanguageSwitcher";
 import ContactForm from "@/components/ContactForm";
+import Logo from "@/components/Logo";
 import { useLang } from "@/lib/i18n.jsx";
 import {
   Building2, LayoutGrid, Home as HomeIcon, Mail, Phone, MapPin,
@@ -49,9 +50,7 @@ export default function Home() {
       <header className="sticky top-0 z-40 border-b border-border bg-background/85 backdrop-blur-xl">
         <div className="max-w-7xl mx-auto px-4 md:px-8 h-auto min-h-16 py-2 flex flex-wrap items-center justify-between md:grid md:grid-cols-[1fr_auto_1fr] gap-3">
           <div className="flex items-center gap-2.5 justify-self-start">
-            <div className="w-9 h-9 rounded-xl bg-primary flex items-center justify-center">
-              <Building2 className="w-5 h-5 text-primary-foreground" />
-            </div>
+            <Logo />
             <div className="leading-none">
               <div className="font-semibold tracking-tight">Yangi Hayot</div>
             </div>
@@ -244,9 +243,7 @@ export default function Home() {
       <footer className="border-t border-border">
         <div className="max-w-7xl mx-auto px-4 md:px-8 py-10 flex flex-col md:flex-row items-center justify-between gap-4 text-sm text-muted-foreground">
           <div className="flex items-center gap-2.5">
-            <div className="w-8 h-8 rounded-lg bg-primary flex items-center justify-center">
-              <Building2 className="w-4 h-4 text-primary-foreground" />
-            </div>
+            <Logo className="w-8 h-8 rounded-lg" />
             <span className="font-medium text-foreground">Yangi Hayot</span>
           </div>
           <div>{t("footer.rights", { year: new Date().getFullYear() })}</div>
