@@ -48,14 +48,29 @@ export default function Home() {
     <div className="bg-background text-foreground overflow-x-hidden">
       {/* Sticky guide bar */}
       <header className="sticky top-0 z-40 border-b border-border bg-background/85 backdrop-blur-xl">
-        <div className="max-w-7xl mx-auto px-4 md:px-8 h-auto min-h-16 py-2 flex flex-wrap items-center justify-between md:grid md:grid-cols-[1fr_auto_1fr] gap-3">
+        {/* Mobile */}
+        <div className="md:hidden max-w-7xl mx-auto px-4 h-16 flex items-center justify-between gap-2">
+          <LanguageSwitcher />
+          <div className="flex items-center gap-2.5">
+            <Logo />
+            <div className="leading-none font-semibold tracking-tight">Yangi Hayot</div>
+          </div>
+          <a href="tel:1359" className="flex items-center gap-2 text-sm font-medium text-foreground hover:text-primary transition">
+            <span className="w-8 h-8 rounded-full bg-primary text-primary-foreground flex items-center justify-center">
+              <Phone className="w-4 h-4" />
+            </span>
+            <span className="font-semibold">1359</span>
+          </a>
+        </div>
+        {/* Desktop */}
+        <div className="hidden md:grid max-w-7xl mx-auto px-4 md:px-8 h-auto min-h-16 py-2 md:grid-cols-[1fr_auto_1fr] gap-3">
           <div className="flex items-center gap-2.5 justify-self-start">
             <Logo />
             <div className="leading-none">
               <div className="font-semibold tracking-tight">Yangi Hayot</div>
             </div>
           </div>
-          <nav className="hidden md:flex items-center justify-self-center gap-1">
+          <nav className="flex items-center justify-self-center gap-1">
             {GUIDE.map((g) => (
               <button
                 key={g.id || g.to}
