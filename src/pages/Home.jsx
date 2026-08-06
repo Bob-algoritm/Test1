@@ -55,11 +55,11 @@ export default function Home() {
             <Logo />
             <div className="leading-none font-semibold tracking-tight">Yangi Hayot</div>
           </div>
-          <a href="tel:1359" className="flex items-center gap-1.5 text-xs font-medium text-foreground hover:text-primary transition">
+          <a href="tel:1349" className="flex items-center gap-1.5 text-xs font-medium text-foreground hover:text-primary transition">
             <span className="w-7 h-7 rounded-full bg-primary text-primary-foreground flex items-center justify-center">
               <Phone className="w-3.5 h-3.5" />
             </span>
-            <span className="font-semibold">1359</span>
+            <span className="font-semibold">1349</span>
           </a>
         </div>
         {/* Desktop */}
@@ -84,8 +84,8 @@ export default function Home() {
           </nav>
           <div className="flex items-center gap-3 justify-self-end">
             <LanguageSwitcher />
-            <a href="tel:1359" className="hidden lg:flex items-center gap-2 text-sm font-medium text-foreground hover:text-primary transition">
-              <Phone className="w-4 h-4" /> 1359
+            <a href="tel:1349" className="hidden lg:flex items-center gap-2 text-sm font-medium text-foreground hover:text-primary transition">
+              <Phone className="w-4 h-4" /> 1349
             </a>
           </div>
         </div>
@@ -244,7 +244,7 @@ export default function Home() {
               <p className="mt-3 text-primary-foreground/85">{t("contact.body")}</p>
               <div className="mt-8 space-y-3">
                 <div className="font-medium text-lg">{t("contact.person")} — {t("contact.role")}</div>
-                <a href="tel:1359" className="flex items-center gap-3 hover:underline"><Phone className="w-5 h-5" /> 1359</a>
+                <a href="tel:1349" className="flex items-center gap-3 hover:underline"><Phone className="w-5 h-5" /> 1349</a>
                 <a href="mailto:hello@unitmatrix.living" className="flex items-center gap-3 hover:underline"><Mail className="w-5 h-5" /> hello@unitmatrix.living</a>
                 <div className="flex items-center gap-3"><MapPin className="w-5 h-5" /> 1 Skyline Plaza, Downtown</div>
               </div>

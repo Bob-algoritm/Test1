@@ -278,7 +278,12 @@ const LanguageContext = createContext();
 export function LanguageProvider({ children }) {
   const [lang, setLangState] = useState(() => {
     if (typeof window !== "undefined") {
-      return localStorage.getItem("lang") || "en";
+      const stored = localStorage.getItem("lang");
+      if (stored) return stored;
+      const nav = (navigator.language || "en").toLowerCase();
+      if (nav.startsWith("ru")) return "ru";
+      if (nav.startsWith("uz")) return "uz";
+      return "en";
     }
     return "en";
   });
