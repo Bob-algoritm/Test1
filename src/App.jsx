@@ -1,12 +1,11 @@
 import { Toaster } from "@/components/ui/toaster"
 import { QueryClientProvider } from '@tanstack/react-query'
 import { queryClientInstance } from '@/lib/query-client'
-import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import PageNotFound from './lib/PageNotFound';
 import { AuthProvider } from '@/lib/AuthContext';
 import { LanguageProvider } from '@/lib/i18n.jsx';
 import ScrollToTop from './components/ScrollToTop';
-import ProtectedRoute from '@/components/ProtectedRoute';
 import Home from '@/pages/Home';
 import Matrix from '@/pages/Matrix';
 import Projects from '@/pages/Projects';
@@ -23,9 +22,7 @@ function App() {
               <Route path="/" element={<Home />} />
               <Route path="/matrix" element={<Matrix />} />
               <Route path="/projects" element={<Projects />} />
-              <Route element={<ProtectedRoute unauthenticatedElement={<Navigate to="/login" replace />} />}>
-                <Route path="/admin" element={<Admin />} />
-              </Route>
+              <Route path="/admin" element={<Admin />} />
               <Route path="*" element={<PageNotFound />} />
             </Routes>
           </LanguageProvider>
