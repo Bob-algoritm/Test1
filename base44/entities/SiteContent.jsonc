@@ -1,0 +1,51 @@
+{
+  "name": "SiteContent",
+  "type": "object",
+  "properties": {
+    "hero_image_url": {
+      "type": "string",
+      "description": "Hero section background image URL"
+    },
+    "about_image_url": {
+      "type": "string",
+      "description": "About section image URL"
+    },
+    "contact_phone": {
+      "type": "string",
+      "description": "Public contact phone number"
+    },
+    "contact_email": {
+      "type": "string",
+      "description": "Public contact email"
+    },
+    "contact_address": {
+      "type": "string",
+      "description": "Public contact address"
+    },
+    "content": {
+      "type": "object",
+      "description": "Localized home page text keyed by language code: { en: {...}, ru: {...}, uz: {...} }"
+    }
+  },
+  "required": [
+    "content"
+  ],
+  "rls": {
+    "read": {},
+    "create": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "update": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "delete": {
+      "user_condition": {
+        "role": "admin"
+      }
+    }
+  }
+}

@@ -1,6 +1,7 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import { useProjects } from "@/hooks/useUnitData";
+import { useSiteContent } from "@/hooks/useSiteContent";
 import { Image } from "@/components/ui/image";
 import { Button } from "@/components/ui/button";
 import LanguageSwitcher from "@/components/LanguageSwitcher";
@@ -12,14 +13,40 @@ import {
   ArrowRight, CheckCircle2, Hammer, ShieldCheck, TrendingUp,
 } from "lucide-react";
 
+const CONTENT_TO_I18N = {
+  hero_badge: "hero.badge", hero_title: "hero.title", hero_subtitle: "hero.subtitle",
+  about_title: "about.title", about_body: "about.body",
+  feat1_title: "feat.constructTitle", feat1_text: "feat.constructText",
+  feat2_title: "feat.trustedTitle", feat2_text: "feat.trustedText",
+  feat3_title: "feat.growingTitle", feat3_text: "feat.growingText",
+  buy_title: "buy.title", buy_subtitle: "buy.subtitle",
+  step1_t: "buy.step1t", step1_d: "buy.step1d",
+  step2_t: "buy.step2t", step2_d: "buy.step2d",
+  step3_t: "buy.step3t", step3_d: "buy.step3d",
+  step4_t: "buy.step4t", step4_d: "buy.step4d",
+  contact_title: "contact.title", contact_body: "contact.body",
+  contact_person: "contact.person", contact_role: "contact.role",
+};
+
+const DEFAULT_HERO = "https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?auto=format&fit=crop&w=2000&q=80";
+const DEFAULT_ABOUT = "https://images.unsplash.com/photo-1486406146926-c627a42ad1c4?auto=format&fit=crop&w=1200&q=80";
+
 const scrollTo = (id) => {
   document.getElementById(id)?.scrollIntoView({ behavior: "smooth", block: "start" });
 };
 
 export default function Home() {
   const { data: projects = [] } = useProjects();
-  const { t } = useLang();
+  const { data: content } = useSiteContent();
+  const { t, lang } = useLang();
   const navigate = useNavigate();
+
+  const c = (key) => content?.content?.[lang]?.[key] || t(CONTENT_TO_I18N[key] || key);
+  const phone = content?.contact_phone || "1349";
+  const email = content?.contact_email || "hello@unitmatrix.living";
+  const address = content?.contact_address || "1 Skyline Plaza, Downtown";
+  const heroImg = content?.hero_image_url || DEFAULT_HERO;
+  const aboutImg = content?.about_image_url || DEFAULT_ABOUT;
 
   const GUIDE = [
     { id: "buy", label: t("nav.buy"), icon: HomeIcon },
@@ -32,16 +59,16 @@ export default function Home() {
   const go = (g) => (g.to ? navigate(g.to) : scrollTo(g.id));
 
   const FEATURES = [
-    { icon: Hammer, title: t("feat.constructTitle"), text: t("feat.constructText") },
-    { icon: ShieldCheck, title: t("feat.trustedTitle"), text: t("feat.trustedText") },
-    { icon: TrendingUp, title: t("feat.growingTitle"), text: t("feat.growingText") },
+    { icon: Hammer, title: c("feat1_title"), text: c("feat1_text") },
+    { icon: ShieldCheck, title: c("feat2_title"), text: c("feat2_text") },
+    { icon: TrendingUp, title: c("feat3_title"), text: c("feat3_text") },
   ];
 
   const STEPS = [
-    { n: "01", t: t("buy.step1t"), d: t("buy.step1d") },
-    { n: "02", t: t("buy.step2t"), d: t("buy.step2d") },
-    { n: "03", t: t("buy.step3t"), d: t("buy.step3d") },
-    { n: "04", t: t("buy.step4t"), d: t("buy.step4d") },
+    { n: "01", t: c("step1_t"), d: c("step1_d") },
+    { n: "02", t: c("step2_t"), d: c("step2_d") },
+    { n: "03", t: c("step3_t"), d: c("step3_d") },
+    { n: "04", t: c("step4_t"), d: c("step4_d") },
   ];
 
   return (
@@ -55,11 +82,11 @@ export default function Home() {
             <Logo />
             <div className="leading-none font-semibold tracking-tight">Yangi Hayot</div>
           </div>
-          <a href="tel:1349" className="flex items-center gap-1.5 text-xs font-medium text-foreground hover:text-primary transition">
+          <a href={`tel:${phone}`} className="flex items-center gap-1.5 text-xs font-medium text-foreground hover:text-primary transition">
             <span className="w-7 h-7 rounded-full bg-primary text-primary-foreground flex items-center justify-center">
               <Phone className="w-3.5 h-3.5" />
             </span>
-            <span className="font-semibold">1349</span>
+            <span className="font-semibold">{phone}</span>
           </a>
         </div>
         {/* Desktop */}
@@ -84,8 +111,8 @@ export default function Home() {
           </nav>
           <div className="flex items-center gap-3 justify-self-end">
             <LanguageSwitcher />
-            <a href="tel:1349" className="hidden lg:flex items-center gap-2 text-sm font-medium text-foreground hover:text-primary transition">
-              <Phone className="w-4 h-4" /> 1349
+            <a href={`tel:${phone}`} className="hidden lg:flex items-center gap-2 text-sm font-medium text-foreground hover:text-primary transition">
+              <Phone className="w-4 h-4" /> {phone}
             </a>
           </div>
         </div>
@@ -94,7 +121,7 @@ export default function Home() {
       {/* Hero */}
       <section className="relative overflow-hidden border-b border-border">
         <img
-          src="https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?auto=format&fit=crop&w=2000&q=80"
+          src={heroImg}
           alt="Modern apartment building"
           className="absolute inset-0 w-full h-full object-cover"
         />
@@ -102,13 +129,13 @@ export default function Home() {
         <div className="relative max-w-7xl mx-auto px-4 md:px-8 py-24 md:py-36">
           <div className="max-w-2xl text-white">
             <span className="inline-flex items-center gap-2 rounded-full bg-white/15 backdrop-blur px-3 py-1 text-xs font-medium tracking-wide uppercase">
-              <Hammer className="w-3.5 h-3.5" /> {t("hero.badge")}
+              <Hammer className="w-3.5 h-3.5" /> {c("hero_badge")}
             </span>
             <h1 className="mt-5 text-4xl md:text-6xl font-bold tracking-tight leading-[1.05]">
-              {t("hero.title")}
+              {c("hero_title")}
             </h1>
             <p className="mt-5 text-lg text-white/85 max-w-xl">
-              {t("hero.subtitle")}
+              {c("hero_subtitle")}
             </p>
             <div className="mt-8 flex flex-wrap gap-3">
               <Button size="lg" className="gap-2" onClick={() => navigate("/matrix")}>
@@ -144,8 +171,8 @@ export default function Home() {
       <section id="about" className="max-w-7xl mx-auto px-4 md:px-8 py-20">
         <div className="grid md:grid-cols-2 gap-12 items-center">
           <div>
-            <h2 className="text-3xl font-bold tracking-tight">{t("about.title")}</h2>
-            <p className="mt-4 text-muted-foreground leading-relaxed">{t("about.body")}</p>
+            <h2 className="text-3xl font-bold tracking-tight">{c("about_title")}</h2>
+            <p className="mt-4 text-muted-foreground leading-relaxed">{c("about_body")}</p>
             <div className="mt-8 space-y-3">
               {FEATURES.map((f) => (
                 <div key={f.title} className="flex gap-3">
@@ -162,7 +189,7 @@ export default function Home() {
           </div>
           <div className="rounded-2xl overflow-hidden border border-border aspect-[4/3]">
             <img
-              src="https://images.unsplash.com/photo-1486406146926-c627a42ad1c4?auto=format&fit=crop&w=1200&q=80"
+              src={aboutImg}
               alt="Our construction"
               className="w-full h-full object-cover"
             />
@@ -174,8 +201,8 @@ export default function Home() {
       <section id="buy" className="border-y border-border bg-secondary/30">
         <div className="max-w-7xl mx-auto px-4 md:px-8 py-20">
           <div className="text-center max-w-2xl mx-auto mb-12">
-            <h2 className="text-3xl font-bold tracking-tight">{t("buy.title")}</h2>
-            <p className="mt-3 text-muted-foreground">{t("buy.subtitle")}</p>
+            <h2 className="text-3xl font-bold tracking-tight">{c("buy_title")}</h2>
+            <p className="mt-3 text-muted-foreground">{c("buy_subtitle")}</p>
           </div>
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
             {STEPS.map((s) => (
@@ -240,13 +267,13 @@ export default function Home() {
         <div className="rounded-2xl border border-border bg-primary text-primary-foreground p-10 md:p-16">
           <div className="grid md:grid-cols-2 gap-10 items-center">
             <div>
-              <h2 className="text-3xl font-bold tracking-tight">{t("contact.title")}</h2>
-              <p className="mt-3 text-primary-foreground/85">{t("contact.body")}</p>
+              <h2 className="text-3xl font-bold tracking-tight">{c("contact_title")}</h2>
+              <p className="mt-3 text-primary-foreground/85">{c("contact_body")}</p>
               <div className="mt-8 space-y-3">
-                <div className="font-medium text-lg">{t("contact.person")} — {t("contact.role")}</div>
-                <a href="tel:1349" className="flex items-center gap-3 hover:underline"><Phone className="w-5 h-5" /> 1349</a>
-                <a href="mailto:hello@unitmatrix.living" className="flex items-center gap-3 hover:underline"><Mail className="w-5 h-5" /> hello@unitmatrix.living</a>
-                <div className="flex items-center gap-3"><MapPin className="w-5 h-5" /> 1 Skyline Plaza, Downtown</div>
+                <div className="font-medium text-lg">{c("contact_person")} — {c("contact_role")}</div>
+                <a href={`tel:${phone}`} className="flex items-center gap-3 hover:underline"><Phone className="w-5 h-5" /> {phone}</a>
+                <a href={`mailto:${email}`} className="flex items-center gap-3 hover:underline"><Mail className="w-5 h-5" /> {email}</a>
+                <div className="flex items-center gap-3"><MapPin className="w-5 h-5" /> {address}</div>
               </div>
             </div>
             <ContactForm />

@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useState, useCallback, useMemo } from "react";
 
-const translations = {
+export const translations = {
   en: {
     "nav.buy": "Buy a House",
     "nav.projects": "Our Projects",
